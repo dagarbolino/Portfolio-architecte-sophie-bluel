@@ -175,6 +175,64 @@ h2 {
 	color: #1d6154;
 }
 
+main .mainLogin {
+	background: #FFFEF8;
+}
+
+section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.conect {
+	width: 379px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 2rem;
+	margin-bottom: 0.5rem;
+}
+
+.conect input {
+	height: 30px;
+	background: white;
+	box-shadow: 0px 4px 14px 0px #00000017;
+}
+
+.btnConect {
+	width: 179px;
+	height: 36px;
+	border-radius: 60px;
+	color: white;
+	background: #1d6154;
+	-webkit-box-shadow: 5px 3px 7px -2px rgba(0,0,0,0.88); 
+	box-shadow: 5px 3px 7px -2px rgba(0,0,0,0.88);
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	transition: 500ms;
+}
+
+.btnConect:hover {
+	background: white;
+	color: #1d6154;
+	font-size: 1rem;
+	font-weight: 600;
+	transition: 500ms;
+}
+
+a {
+	text-decoration:none;
+	color: inherit;
+}
+
+.mpOublie {
+	width: 139px;
+	height: 16px;
+	text-decoration:underline;
+}
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -186,7 +244,8 @@ nav li {
 	font-size: 1.2em;
 }
 
-li:hover {
+li:hover,
+a:hover {
 	color: #b1663c;
 }
 
