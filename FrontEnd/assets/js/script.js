@@ -106,120 +106,28 @@ buttonsContainer.addEventListener("click", (event) => {
 });
 
 
-/**
- * 
-const getWorks = async () => {
-  try {
-    const response = await fetch(url + "works");
-    const data = await response.json();
-    return data; // Retourne les données récupérées
-  } catch (error) {
-    console.log(error);
-    throw new Error('Erreur lors de la récupération des données');
-  }
-};
 
-const galleryElement = document.getElementById("gallery");
+var modal = document.getElementById("myModal");
 
-const updateContent = async (category) => {
-  try {
-    const worksData = await getWorks(); // Attend les données des travaux
-    const filteredCategories = worksData.filter(function (work) {
-      return work.categoryId === getCategoryID(category);
-    });
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
 
-    console.log(filteredCategories); // Affiche les travaux filtrés dans la console
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
 
-    // Vider le contenu existant
-    galleryElement.innerHTML = '';
-
-    // Ajouter le nouveau contenu
-    for (let i = 0; i < filteredCategories.length; i++) {
-      const card = filteredCategories[i];
-      const figure = document.createElement("figure");
-      const imageElement = document.createElement("img");
-      imageElement.src = card.imageUrl ?? "aucune image pour le moment";
-      const titleElement = document.createElement("figcaption");
-      titleElement.innerText = card.title ?? "aucun titre pour le moment";
-
-      figure.appendChild(imageElement);
-      figure.appendChild(titleElement);
-      galleryElement.appendChild(figure);
-    }
-  } catch (error) {
-    console.log(error); // Affiche les erreurs dans la console
-  }
-};
-
-const getCategoryID = (category) => {
-  switch (category) {
-    case "objets":
-      return 1;
-    case "appartements":
-      return 2;
-    case "hotels-restos":
-      return 3;
-    default:
-      return -1; // Retourne -1 pour une catégorie inconnue
-  }
-};
-
-const buttons = document.querySelectorAll(".btn");
-
-buttons.forEach(button => {
-  button.addEventListener("click", async (event) => {
-    const category = event.target.getAttribute("data-category");
-    await updateContent(category);
-  });
-});
-
-const boutonAll = document.querySelector(".btn[data-category='all']");
-
-boutonAll.addEventListener("click", async function () {
-  try {
-    const worksData = await getWorks(); // Attend les données des travaux
-    const allWorks = worksData.filter(function (work) {
-      return true; // Retourne tous les travaux
-    });
-
-    console.log(allWorks); // Affiche tous les travaux dans la console
-
-    // Vider le contenu existant
-    galleryElement.innerHTML = '';
-
-    // Ajouter le nouveau contenu
-    for (let i = 0; i < allWorks.length; i++) {
-      const card = allWorks[i];
-      const figure = document.createElement("figure");
-      const imageElement = document.createElement("img");
-      imageElement.src = card.imageUrl ?? "aucune image pour le moment";
-      const titleElement = document.createElement("figcaption");
-      titleElement.innerText = card.title ?? "aucun titre pour le moment";
-
-      figure.appendChild(imageElement);
-      figure.appendChild(titleElement);
-      galleryElement.appendChild(figure);
-    }
-  } catch (error) {
-    console.log(error); // Affiche les erreurs dans la console
-  }
-});
-
-
-const buttonss = document.getElementsByClassName("buttons")[0].getElementsByClassName("btn");
-
-for (let i = 0; i < buttonss.length; i++) {
-  buttonss[i].addEventListener("click", function() {
-    let current = document.getElementsByClassName("active");
-
-    if (current.length > 0) {
-      current[0].className = current[0].className.replace(" active", "");
-    }
-
-    this.className += " active";
-  });
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
 }
 
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
 
-
- */
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
