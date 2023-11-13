@@ -1,4 +1,28 @@
-const url = "http://localhost:5678/api/";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**const url = "http://localhost:5678/api/";
 
 const URL_WORKS = url + "works";
 
@@ -131,3 +155,4 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+ */
