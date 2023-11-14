@@ -481,11 +481,13 @@ footer nav ul {
 	font-weight: 500;
 }
 
-.gallery {
+#figure {
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-column-gap: 0px;
 	grid-row-gap: 30px;
 }
+
+
 
 .gallery figure {
 	width: 50px;

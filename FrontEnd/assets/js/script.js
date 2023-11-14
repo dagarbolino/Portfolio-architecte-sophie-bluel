@@ -84,7 +84,7 @@ const logout = () => {
   });
 
   loginNav.innerHTML = "";
-  loginNav.appendChild(a); 
+  loginNav.appendChild(a);
 };
 
 
@@ -95,17 +95,131 @@ const logout = () => {
 //#region Function
 
 // Fetch des articles (works)
-fetch(URL_WORKS)
-  .then((data) => data.json())
-  .then((jsonListWorks) => {
-    for (let jsonWorks of jsonListWorks) {
-      let works = new Works(jsonWorks);
-      console.log(works);
-    }
-  })
-  .catch((error) => {
-    console.error("Erreur lors de la récupération des données : " + error);
+const elementBtnAll = document.getElementById("btnAll");
+const worksContainer = document.getElementById("gallery"); 
+
+elementBtnAll.addEventListener("click", () => {
+  fetch(URL_WORKS)
+    .then((data) => data.json())
+    .then((jsonListWorks) => {
+      worksContainer.innerHTML = ""; 
+
+      for (let jsonWorks of jsonListWorks) {
+        let works = new Works(jsonWorks);
+        console.log(works);
+        worksContainer.innerHTML += `
+        <div id="figure">
+          <img id="img" src="${works.imageUrl}" alt="section de toutes les images">
+          <p id="para">${works.title}</p>
+        </div>
+        `;
+      }
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la récupération des données : " + error);
+    });
+});
+
+
+
+
+const elementBtnObjets = document.getElementById("btnObjets");
+const worksContainerObjets = document.getElementById("gallery");
+
+  elementBtnObjets.addEventListener("click", () => {
+    fetch(URL_WORKS)
+      .then((data) => data.json())
+      .then((jsonListWorks) => {
+        gallery.innerHTML = "";
+        for (let jsonWorks of jsonListWorks) {
+          let works = new Works(jsonWorks);
+  
+          if (works.category && works.category.name === "Objets") {
+            gallery.innerHTML += `
+              <div id="figure">
+                <img src="${works.imageUrl}" alt="${works.title}">
+                <p>${works.title}</p>
+              </div>
+            `;
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data: " + error);
+      });
   });
+
+
+  const elementBtnApp = document.getElementById("btnApp");
+  elementBtnApp.addEventListener("click", () => {
+    //const categoryId = 1; // Replace with the actual category ID for "Objets"
+  
+    fetch(URL_WORKS)
+      .then((data) => data.json())
+      .then((jsonListWorks) => {
+        gallery.innerHTML = "";
+        for (let jsonWorks of jsonListWorks) {
+          let works = new Works(jsonWorks);
+  
+          if (works.category && works.category.name === "Appartements") {
+            gallery.innerHTML += `
+              <div id="figure">
+                <img src="${works.imageUrl}" alt="${works.title}">
+                <p>${works.title}</p>
+              </div>
+            `;
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data: " + error);
+      });
+  });
+
+
+  const elementBtnHotelResto = document.getElementById("btnHotelResto");
+  elementBtnHotelResto.addEventListener("click", () => {
+  
+    fetch(URL_WORKS)
+      .then((data) => data.json())
+      .then((jsonListWorks) => {
+        gallery.innerHTML = "";
+        for (let jsonWorks of jsonListWorks) {
+          let works = new Works(jsonWorks);
+  
+          if (works.category && works.category.name === "Hotels & restaurants") {
+            gallery.innerHTML += `
+              <div id="figure">
+                <img src="${works.imageUrl}" alt="${works.title}">
+                <p>${works.title}</p>
+              </div>
+            `;
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data: " + error);
+      });
+  });
+
+
+
+/**const elementBtnAlll = (works) => {
+  for (let i = 0; i < works.length; i++) {
+    const card = works[i];
+    const figure = document.createElement("figure");
+    const imageElement = document.createElement("img");
+    imageElement.src = card.imageUrl ?? "aucune image pour le moment";
+    const titleElement = document.createElement("figcaption");
+    titleElement.innerText = card.title ?? "aucun titre pour le moment";
+
+    figure.appendChild(imageElement);
+    figure.appendChild(titleElement);
+    elementBtnAll.appendChild(figure);
+  }
+}; */
+
+
 
 // Fetch des catégories (works)
 fetch(URL_CATEGORY)
@@ -113,64 +227,33 @@ fetch(URL_CATEGORY)
   .then((jsonCategory) => {
     for (let jsonCat of jsonCategory) {
       let Categorys = new Category(jsonCat);
+
       console.log(Categorys);
+      
+//categoryId: 2
+
+
+
     }
   })
   .catch((error) => {
     console.error("Erreur lors de la récupération des catégories : " + error);
+
+    console.log(reponse);
   });
 
 
 
-//#endregion
 
+
+
+
+
+
+
+//#endregion
 
 //#region Events   S0phie
-
-
- //event listener sur logout avec la function logou
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/** btn
- * btnCategories.addEventListener("click", async () => {
-  const data = await getCategories();
-  console.log(data);
-});
-
-btnWork.addEventListener("click", async () => {
-  const data = await getWorks();
-  console.log(data);
-});
-
-btnDeleteWork.addEventListener("click", async () => {
-  const data = await deleteWork(1);
-  console.log(data);
-})
-
- */
-//#endregion
-
-
-
-
-
-
-
-
-
 
 /**const url = "http://localhost:5678/api/";
 
