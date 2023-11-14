@@ -1,4 +1,134 @@
 
+/**
+ * login
+ * email: sophie.bluel@test.tld
+ * password: S0phie 
+ */
+
+
+//#region Variable
+
+const url = "http://localhost:5678/api/";
+const URL_WORKS = url + ("works")
+const URL_CATEGORY = "http://localhost:5678/api/categories";
+const URL_LOGIN = url + ("users/login");
+
+const galleryyElement = document.getElementById("galleryy");
+const modalAjoutElement = document.getElementById("btnModalAjout");
+//const loginForm = document.getElementById("loginForm");
+const loginNavvvv = document.querySelector(".loginNav");
+
+
+
+
+const btnCategories = document.getElementById("btnCategories");
+const btnWork = document.getElementById("btnWork");
+const btnDeleteWork = document.getElementById("btnDeleteWork");
+
+
+
+
+//#endregion
+
+
+//#region Class
+// Class Works
+class Works {
+  constructor(jsonWorks) {
+    jsonWorks && Object.assign(this, jsonWorks);
+  }
+}
+// Class Categories
+class Category {
+  constructor(jsonCats) {
+    jsonCats && Object.assign(this, jsonCats);
+  }
+}
+
+class Login {
+  constructor(email, password) {
+    this.email = email;
+    this.password = password;
+  }
+}
+//#endregion
+
+//#region Methods
+
+
+// Delete work
+const deleteWork = async (id) => {
+  const reponse = await fetch(`${url}works/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  if (reponse.status === 401) {
+    throw new Error("Unauthorized");
+  }
+  if (reponse.status === 200) {
+    return "Work deleted"
+  }
+  return data;
+};
+
+// Logout
+const logout = () => {
+  localStorage.removeItem("token");
+  const a = document.createElement("a");
+  a.href = "login.html";
+  a.innerHTML = "Login";
+  a.addEventListener("click", () => {
+    logout();
+  });
+
+  loginNav.innerHTML = "";
+  loginNav.appendChild(a); 
+};
+
+
+
+//#endregion
+
+
+//#region Function
+
+// Fetch des articles (works)
+fetch(URL_WORKS)
+  .then((data) => data.json())
+  .then((jsonListWorks) => {
+    for (let jsonWorks of jsonListWorks) {
+      let works = new Works(jsonWorks);
+      console.log(works);
+    }
+  })
+  .catch((error) => {
+    console.error("Erreur lors de la récupération des données : " + error);
+  });
+
+// Fetch des catégories (works)
+fetch(URL_CATEGORY)
+  .then((data) => data.json())
+  .then((jsonCategory) => {
+    for (let jsonCat of jsonCategory) {
+      let Categorys = new Category(jsonCat);
+      console.log(Categorys);
+    }
+  })
+  .catch((error) => {
+    console.error("Erreur lors de la récupération des catégories : " + error);
+  });
+
+
+
+//#endregion
+
+
+//#region Events   S0phie
+
+
+ //event listener sur logout avec la function logou
 
 
 
@@ -12,6 +142,26 @@
 
 
 
+
+
+/** btn
+ * btnCategories.addEventListener("click", async () => {
+  const data = await getCategories();
+  console.log(data);
+});
+
+btnWork.addEventListener("click", async () => {
+  const data = await getWorks();
+  console.log(data);
+});
+
+btnDeleteWork.addEventListener("click", async () => {
+  const data = await deleteWork(1);
+  console.log(data);
+})
+
+ */
+//#endregion
 
 
 
@@ -131,25 +281,22 @@ buttonsContainer.addEventListener("click", (event) => {
 
 
 
-var modal = document.getElementById("myModal");
+const modal = document.getElementById("myModal");
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+const btn = document.getElementById("myBtn");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal 
+const span = document.getElementsByClassName("close")[0];
+
+
 btn.onclick = function() {
   modal.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";
 }
 
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
