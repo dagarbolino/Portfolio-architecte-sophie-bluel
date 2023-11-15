@@ -15,18 +15,302 @@ const URL_LOGIN = url + ("users/login");
 
 const galleryyElement = document.getElementById("galleryy");
 const modalAjoutElement = document.getElementById("btnModalAjout");
-//const loginForm = document.getElementById("loginForm");
+const loginForm = document.getElementById("loginForm");
 const loginNavvvv = document.querySelector(".loginNav");
 
 
 
 
-const btnCategories = document.getElementById("btnCategories");
-const btnWork = document.getElementById("btnWork");
-const btnDeleteWork = document.getElementById("btnDeleteWork");
+
+//#region Events   S0phie
 
 
 
+
+
+
+async function afficherArticles() {
+  const reponse = await fetch("URL_WORKS");
+  const articles = await reponse.json();
+  console.log(articles);
+}
+
+
+class Works {
+  constructor(jsonWorks) {
+    jsonWorks && Object.assign(this, jsonWorks);
+  }
+}
+
+// Fetch des articles (works)
+fetch(URL_WORKS)
+  .then((data) => data.json())
+  .then((jsonListWorks) => {
+    for (let jsonWorks of jsonListWorks) {
+      let works = new Works(jsonWorks);
+
+      let figure = document.createElement("div");
+      figure.className = "figure";
+      figure.id = "figure";
+
+      let imageElement = document.createElement("img");
+      let titleElement = document.createElement("p")
+
+      imageElement.src = works.imageUrl;
+      imageElement.innerText = works.imageUrl ?? "(Aucune image)";
+
+      titleElement.textContent = works.title;
+      titleElement.innerText = works.title ?? "(Aucun titre)";
+
+      figure.appendChild(imageElement);
+      figure.appendChild(titleElement);
+
+      document.getElementById("gallery").appendChild(figure);
+    }
+  })
+  .catch((error) => {
+    console.error("Erreur lors de la récupération des articles : " + error);
+  });
+
+
+
+
+
+  fetch(URL_WORKS)
+  .then((data) => data.json())
+  .then((jsonListWorks) => {
+    const categoryObjetId = 1;  
+    const filteredWorks = jsonListWorks.filter(work => work.category.id === categoryObjetId);
+    console.log(filteredWorks);
+  })
+  .catch((error) => {
+    console.error("Erreur lors de la récupération des articles : " + error);
+  });
+
+
+
+
+
+  fetch(URL_WORKS)
+  .then((data) => data.json())
+  .then((jsonListWorks) => {
+    const categoryAppartementsId = 2;  
+    const filteredWorksApp = jsonListWorks.filter(work => work.category.id === categoryAppartementsId);
+    console.log(filteredWorksApp);
+  })
+  .catch((error) => {
+    console.error("Erreur lors de la récupération des articles : " + error);
+  });
+
+
+  fetch(URL_WORKS)
+  .then((data) => data.json())
+  .then((jsonListWorks) => {
+    const categoryHotelRestoId = 3;  
+    const filteredWorksHotelResto = jsonListWorks.filter(work => work.category.id === categoryHotelRestoId);
+    console.log(filteredWorksHotelResto);
+  })
+  .catch((error) => {
+    console.error("Erreur lors de la récupération des articles : " + error);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**voir le melange de code apres le14/11 23h55
+ * 
+
+const URL_WORKS = url + "works";
+
+const getWorks = async () => {
+  try {
+    const response = await fetch(URL_WORKS);
+    console.log(re);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erreur lors de la récupération des données');
+  }
+};
+
+
+
+const appendToGallery = (works) => {
+  for (let i = 0; i < works.length; i++) {
+    const card = works[i];
+    const figure = document.createElement("figure");
+    const imageElement = document.createElement("img");
+    imageElement.src = card.imageUrl ?? "aucune image pour le moment";
+    const titleElement = document.createElement("figcaption");
+    titleElement.innerText = card.title ?? "aucun titre pour le moment";
+
+    figure.appendChild(imageElement);
+    figure.appendChild(titleElement);
+    galleryElement.appendChild(figure);
+  }
+};
+
+
+
+
+//#endregion
+
+//#region Events   S0phie
+
+/**const url = "http://localhost:5678/api/";
+
+const URL_WORKS = url + "works";
+
+const getWorks = async () => {
+  try {
+    const response = await fetch(URL_WORKS);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Erreur lors de la récupération des données');
+  }
+};
+
+const galleryElement = document.getElementById("gallery");
+
+const updateContent = async (category) => {
+  try {
+    const worksData = await getWorks();
+    let filteredCategories;
+    
+    if (category === 'all') {
+      filteredCategories = worksData;
+    } else {
+      filteredCategories = worksData.filter(work => work.categoryId === getCategoryID(category));
+    }
+
+    clearGallery();
+    appendToGallery(filteredCategories);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getCategoryID = (category) => {
+  switch (category) {
+    case "objets":
+      return 1;
+    case "appartements":
+      return 2;
+    case "hotels-restos":
+      return 3;
+    default:
+      return -1;
+  }
+};
+
+const clearGallery = () => {
+  galleryElement.innerHTML = '';
+};
+
+const appendToGallery = (works) => {
+  for (let i = 0; i < works.length; i++) {
+    const card = works[i];
+    const figure = document.createElement("figure");
+    const imageElement = document.createElement("img");
+    imageElement.src = card.imageUrl ?? "aucune image pour le moment";
+    const titleElement = document.createElement("figcaption");
+    titleElement.innerText = card.title ?? "aucun titre pour le moment";
+
+    figure.appendChild(imageElement);
+    figure.appendChild(titleElement);
+    galleryElement.appendChild(figure);
+  }
+};
+
+// Appel initial pour afficher le contenu "all" au chargement de la page
+document.addEventListener('DOMContentLoaded', async () => {
+  await updateContent('all');
+});
+
+const buttons = document.querySelectorAll(".btn");
+
+buttons.forEach(button => {
+  button.addEventListener("click", async (event) => {
+    const category = event.target.getAttribute("data-category");
+    await updateContent(category);
+  });
+});
+
+const boutonAll = document.querySelector(".btn[data-category='all']");
+
+boutonAll.addEventListener("click", async () => {
+  try {
+    await updateContent('all');
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const buttonsContainer = document.querySelector(".buttons");
+
+buttonsContainer.addEventListener("click", (event) => {
+  const targetButton = event.target.closest(".btn");
+
+  if (targetButton) {
+    const currentActiveButton = buttonsContainer.querySelector(".btn.active");
+
+    if (currentActiveButton) {
+      currentActiveButton.classList.remove("active");
+    }
+
+    targetButton.classList.add("active");
+  }
+});
+
+
+
+const modal = document.getElementById("myModal");
+
+const btn = document.getElementById("myBtn");
+
+
+const span = document.getElementsByClassName("close")[0];
+
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+ */
+
+
+
+/** code ok 14/11/23   23h46 
+ * 
 
 //#endregion
 
@@ -204,7 +488,50 @@ const worksContainerObjets = document.getElementById("gallery");
 
 
 
-/**const elementBtnAlll = (works) => {
+
+
+
+
+// Fetch des catégories (works)
+fetch(URL_CATEGORY)
+.then((data) => data.json())
+.then((jsonCategory) => {
+  for (let jsonCat of jsonCategory) {
+    let Categorys = new Category(jsonCat);
+
+    console.log(Categorys);
+    
+//categoryId: 2
+
+
+
+  }
+})
+.catch((error) => {
+  console.error("Erreur lors de la récupération des catégories : " + error);
+
+  console.log(reponse);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const elementBtnAlll = (works) => {
   for (let i = 0; i < works.length; i++) {
     const card = works[i];
     const figure = document.createElement("figure");
@@ -219,170 +546,3 @@ const worksContainerObjets = document.getElementById("gallery");
   }
 }; */
 
-
-
-// Fetch des catégories (works)
-fetch(URL_CATEGORY)
-  .then((data) => data.json())
-  .then((jsonCategory) => {
-    for (let jsonCat of jsonCategory) {
-      let Categorys = new Category(jsonCat);
-
-      console.log(Categorys);
-      
-//categoryId: 2
-
-
-
-    }
-  })
-  .catch((error) => {
-    console.error("Erreur lors de la récupération des catégories : " + error);
-
-    console.log(reponse);
-  });
-
-
-
-
-
-
-
-
-
-
-//#endregion
-
-//#region Events   S0phie
-
-/**const url = "http://localhost:5678/api/";
-
-const URL_WORKS = url + "works";
-
-const getWorks = async () => {
-  try {
-    const response = await fetch(URL_WORKS);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Erreur lors de la récupération des données');
-  }
-};
-
-const galleryElement = document.getElementById("gallery");
-
-const updateContent = async (category) => {
-  try {
-    const worksData = await getWorks();
-    let filteredCategories;
-    
-    if (category === 'all') {
-      filteredCategories = worksData;
-    } else {
-      filteredCategories = worksData.filter(work => work.categoryId === getCategoryID(category));
-    }
-
-    clearGallery();
-    appendToGallery(filteredCategories);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getCategoryID = (category) => {
-  switch (category) {
-    case "objets":
-      return 1;
-    case "appartements":
-      return 2;
-    case "hotels-restos":
-      return 3;
-    default:
-      return -1;
-  }
-};
-
-const clearGallery = () => {
-  galleryElement.innerHTML = '';
-};
-
-const appendToGallery = (works) => {
-  for (let i = 0; i < works.length; i++) {
-    const card = works[i];
-    const figure = document.createElement("figure");
-    const imageElement = document.createElement("img");
-    imageElement.src = card.imageUrl ?? "aucune image pour le moment";
-    const titleElement = document.createElement("figcaption");
-    titleElement.innerText = card.title ?? "aucun titre pour le moment";
-
-    figure.appendChild(imageElement);
-    figure.appendChild(titleElement);
-    galleryElement.appendChild(figure);
-  }
-};
-
-// Appel initial pour afficher le contenu "all" au chargement de la page
-document.addEventListener('DOMContentLoaded', async () => {
-  await updateContent('all');
-});
-
-const buttons = document.querySelectorAll(".btn");
-
-buttons.forEach(button => {
-  button.addEventListener("click", async (event) => {
-    const category = event.target.getAttribute("data-category");
-    await updateContent(category);
-  });
-});
-
-const boutonAll = document.querySelector(".btn[data-category='all']");
-
-boutonAll.addEventListener("click", async () => {
-  try {
-    await updateContent('all');
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-const buttonsContainer = document.querySelector(".buttons");
-
-buttonsContainer.addEventListener("click", (event) => {
-  const targetButton = event.target.closest(".btn");
-
-  if (targetButton) {
-    const currentActiveButton = buttonsContainer.querySelector(".btn.active");
-
-    if (currentActiveButton) {
-      currentActiveButton.classList.remove("active");
-    }
-
-    targetButton.classList.add("active");
-  }
-});
-
-
-
-const modal = document.getElementById("myModal");
-
-const btn = document.getElementById("myBtn");
-
-
-const span = document.getElementsByClassName("close")[0];
-
-
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
- */
