@@ -409,9 +409,9 @@ footer nav ul {
 	visibility: hidden;
 	position: fixed;
 	top: 0;
-	width: 100vw;
-	height: 100vh;
-	transition: visibility 0.4s;
+	width: 100%;
+	height: 100%;
+	
 }
 
 .modal-container.active {
@@ -435,20 +435,23 @@ footer nav ul {
 
 .modal {
 	opacity: 0;
-	width: 100%;
+	width: 360px;
 	max-width: 360px;
 	min-width: 200px;
-	padding: 40px;
+	padding: 20px 40px 20px 40px;
 	background: #fff;
 	border-radius: 5px;
 	position: absolute;
-	top: 40%;
+	top: 60%;
 	left: 50%;
 
-	transform: translate(-50%, calc(-50% - 50px));
-	transition: opacity 0.4s ease-out;
-	transform: 0.4s ease-out;
+	padding: 40px;
+	max-width: calc(100vw - 20px);
+	max-height: calc(100vh - 20px);
+	overflow: auto;
+
 }
+
 
 .modal-container.active {
 	background: none;

@@ -1,13 +1,4 @@
-
-/**
- * login
- * email: sophie.bluel@test.tld
- * password: S0phie 
- */
-
-
-//#region Variable
-
+//#region Variables
 const url = "http://localhost:5678/api/";
 const URL_WORKS = url + ("works")
 const URL_CATEGORY = "http://localhost:5678/api/categories";
@@ -20,99 +11,99 @@ const loginNavvvv = document.querySelector(".loginNav");
 
 
 
+//   S0phie
+const boutonAll = document.querySelector(".btn[data-category='all']");
+const boutonObjets = document.querySelector(".btn[data-category='objets']");
+const boutonAppart = document.querySelector(".btn[data-category='appartements']");
+const boutonHotelResto = document.querySelector(".btn[data-category='hotels-restos']");
 
+//#endregion
 
-//#region Events   S0phie
-
-
-
-
-
-
-async function afficherArticles() {
-  const reponse = await fetch("URL_WORKS");
-  const articles = await reponse.json();
-  console.log(articles);
-}
-
-
+//#region Class
 class Works {
   constructor(jsonWorks) {
     jsonWorks && Object.assign(this, jsonWorks);
   }
 }
 
-// Fetch des articles (works)
-fetch(URL_WORKS)
-  .then((data) => data.json())
-  .then((jsonListWorks) => {
-    for (let jsonWorks of jsonListWorks) {
-      let works = new Works(jsonWorks);
+//#endregion
 
-      let figure = document.createElement("div");
-      figure.className = "figure";
-      figure.id = "figure";
-
-      let imageElement = document.createElement("img");
-      let titleElement = document.createElement("p")
-
-      imageElement.src = works.imageUrl;
-      imageElement.innerText = works.imageUrl ?? "(Aucune image)";
-
-      titleElement.textContent = works.title;
-      titleElement.innerText = works.title ?? "(Aucun titre)";
-
-      figure.appendChild(imageElement);
-      figure.appendChild(titleElement);
-
-      document.getElementById("gallery").appendChild(figure);
-    }
-  })
-  .catch((error) => {
-    console.error("Erreur lors de la récupération des articles : " + error);
-  });
-
-
-
-
-
+//#region Function
+function fetchAndDisplay(categoryId) {
   fetch(URL_WORKS)
-  .then((data) => data.json())
-  .then((jsonListWorks) => {
-    const categoryObjetId = 1;  
-    const filteredWorks = jsonListWorks.filter(work => work.category.id === categoryObjetId);
-    console.log(filteredWorks);
-  })
-  .catch((error) => {
-    console.error("Erreur lors de la récupération des articles : " + error);
-  });
+    .then((data) => data.json())
+    .then((jsonListWorks) => {
+      let filteredWorks;
+
+      if (categoryId === "all") {
+        filteredWorks = jsonListWorks;
+      } else {
+        filteredWorks = jsonListWorks.filter(work => work.category.id === categoryId);
+      }
+
+      for (let jsonWorks of filteredWorks) {
+        let works = new Works(jsonWorks);
+
+        let figure = document.createElement("div");
+        figure.className = "figure";
+
+        let imageElement = document.createElement("img");
+        imageElement.src = works.imageUrl;
+        imageElement.alt = works.title;
+
+        let titleElement = document.createElement("p");
+        titleElement.textContent = works.title;
+
+        figure.appendChild(imageElement);
+        figure.appendChild(titleElement);
+
+        document.getElementById("gallery").appendChild(figure);
+      }
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la récupération des articles : " + error);
+    });
+}
+
+//#endregion
+
+//#region Event
+
+// Evénements
+
+document.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay("all");
+});
+
+
+boutonAll.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = ""; // Efface le contenu
+  fetchAndDisplay("all");
+});
+
+boutonObjets.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay(1);
+});
+
+boutonAppart.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay(2);
+});
+
+boutonHotelResto.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay(3);
+});
+
+
+//#endregion
 
 
 
 
 
-  fetch(URL_WORKS)
-  .then((data) => data.json())
-  .then((jsonListWorks) => {
-    const categoryAppartementsId = 2;  
-    const filteredWorksApp = jsonListWorks.filter(work => work.category.id === categoryAppartementsId);
-    console.log(filteredWorksApp);
-  })
-  .catch((error) => {
-    console.error("Erreur lors de la récupération des articles : " + error);
-  });
-
-
-  fetch(URL_WORKS)
-  .then((data) => data.json())
-  .then((jsonListWorks) => {
-    const categoryHotelRestoId = 3;  
-    const filteredWorksHotelResto = jsonListWorks.filter(work => work.category.id === categoryHotelRestoId);
-    console.log(filteredWorksHotelResto);
-  })
-  .catch((error) => {
-    console.error("Erreur lors de la récupération des articles : " + error);
-  });
 
 
 

@@ -4,8 +4,18 @@
  * password: S0phie 
  */
 
+//#region Class
+
+class Login {
+  constructor(email, password) {
+    this.email = email;
+    this.password = password;
+  }
+}
+//#endregion
 
 
+//#region Event
 document.addEventListener("DOMContentLoaded", function () {
   const login = async (email, password) => {
     const loginData = new Login(email, password);
@@ -41,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
 
     try {
-      // Récupére les valeurs des champs email et password
       const email = document.getElementById("emailLogin").value;
       const password = document.getElementById("passwordLogin").value;
 
@@ -70,3 +79,5 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
+//#endregion
