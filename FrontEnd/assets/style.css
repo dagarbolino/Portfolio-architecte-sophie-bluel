@@ -435,7 +435,7 @@ footer nav ul {
 }
 
 .modal {
-	opacity: 0;
+	opacity: 1;
 	width: 370px;
 	max-width: 360px;
 	min-width: 200px;

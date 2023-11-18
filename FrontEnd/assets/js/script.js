@@ -145,15 +145,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-const modal = document.getElementById("modalContainer");
-const btn = document.getElementById("elementBtnModify");
+const modal = document.querySelector(".modal-container");
+//const btn = document.getElementById("elementBtnModify");
 const close = document.getElementsByClassName("close-modal")[0];
+const modalBtnn = document.querySelector(".modal-btn")
 
-
-elementBtnModify.addEventListener("click", () => {
-
+modalBtnn.addEventListener("click", () => {
+console.log(modalBtnn);
 
   const elementBtnAll = (works) => {
+    console.log(elementBtnAll);
     for (let i = 0; i < works.length; i++) {
       const card = works[i];
       console.log(card);
@@ -170,16 +171,18 @@ elementBtnModify.addEventListener("click", () => {
     }
   };
 
-/**  document.getElementById("galleryModale").innerHTML = `
+  document.getElementById("galleryModale").innerHTML = `
 
-  ` */
+  ` 
 
 })
 
 
 
-btn.onclick = function() {
+modalBtnn.onclick = function() {
+  console.log("helloooooooooo");
   modal.style.display = "block";
+  
 }
 
 close.onclick = function() {
