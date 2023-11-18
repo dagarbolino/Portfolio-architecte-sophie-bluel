@@ -1,4 +1,8 @@
-//#region Variable
+
+
+/**
+
+
 const url = "http://localhost:5678/api/";
 const URL_WORKS = url + ("works")
 
@@ -9,7 +13,7 @@ const modal = document.getElementById("myModal");
 const btn = document.getElementById("myBtn");
 const span = document.getElementsByClassName("close")[0];
 
-//#endregion
+
 
 //#region Class
 class Works {
@@ -20,34 +24,8 @@ class Works {
 //#endregion
 
 //#region Function
-function fetchAndDisplay() {
-  fetch(URL_WORKS)
-    .then((data) => data.json())
-    .then((jsonListWorks) => {
-     
-      for (let jsonWorks of jsonListWorks) {
-        let works = new Works(jsonWorks);
 
-        let figure = document.createElement("div");
-        figure.className = "figure";
 
-        let imageElement = document.createElement("img");
-        imageElement.src = works.imageUrl;
-        imageElement.alt = works.title;
-
-        let titleElement = document.createElement("p");
-        titleElement.textContent = works.title;
-
-        figure.appendChild(imageElement);
-        figure.appendChild(titleElement);
-
-        document.getElementById("gallery").appendChild(figure);
-      }
-    })
-    .catch((error) => {
-      console.error("Erreur lors de la récupération des articles : " + error);
-    });
-}
 
 //#endregion
 
@@ -58,26 +36,16 @@ logoutNav.addEventListener("click", () => {
 window.location.href = "./index.html";
 }); 
 
-
-document.addEventListener('DOMContentLoaded', async () => {
-  document.getElementById("galleryy").innerHTML = "";
-  fetchAndDisplay("all");
+const modaleGallery = document.getElementById("galleryModale");
+modaleGallery.document.addEventListener("click", () => {
+console.log(modaleGallery);
+  fetchAndDisplay();
 });
 
 
 //#endregion
 
-
-
-
-
-
-
-
-
-
-
-
+ */
 
 
 

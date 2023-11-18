@@ -298,6 +298,7 @@ a:hover {
 	border: 1px;
 	text-align: center;
 	padding: 60px;
+	
 }
 
 .btn {
@@ -435,17 +436,17 @@ footer nav ul {
 
 .modal {
 	opacity: 0;
-	width: 360px;
+	width: 370px;
 	max-width: 360px;
 	min-width: 200px;
 	padding: 20px 40px 20px 40px;
 	background: #fff;
 	border-radius: 5px;
 	position: absolute;
-	top: 60%;
+	top: 50%;
 	left: 50%;
 
-	padding: 40px;
+	padding: 30px;
 	max-width: calc(100vw - 20px);
 	max-height: calc(100vh - 20px);
 	overflow: auto;
@@ -484,24 +485,34 @@ footer nav ul {
 	font-weight: 500;
 }
 
-#figure {
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	grid-column-gap: 0px;
-	grid-row-gap: 30px;
+#galleryModale  {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-column-gap: 10px;
+	grid-row-gap: 10px;
+}
+
+#galleryModale .figure {
+	display: flex;
 }
 
 
 
-.gallery figure {
-	width: 50px;
-	height: 50px;
+#galleryModale img {
+	width: 80px;
 }
 
-.gallery figcaption {
-	display: none;
-	width: 0;
-	height: 0;
+#galleryModale close {
+	color: black;
+	position: absolute;
+	width: 78px;
+	height: 20px;
+	display: flex;
+	justify-content: end;
+	align-items: center;
 }
+
+
 
 .btnModalAjout {
 	width: 200px;
@@ -514,7 +525,7 @@ footer nav ul {
 }
 
 /*logout*/
-.loginNav a {
+.loginForm a {
 	color: black;
 	cursor: pointer;
 }
@@ -523,3 +534,17 @@ footer nav ul {
 
 
 /*login*/
+
+.conected {
+	display: flex;
+	align-items: center;
+	background: black;
+	color: white;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 25px;
+}
+
+
+

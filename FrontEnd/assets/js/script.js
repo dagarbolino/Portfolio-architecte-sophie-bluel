@@ -1,32 +1,243 @@
-//#region Variables
+
+
+
 const url = "http://localhost:5678/api/";
 const URL_WORKS = url + ("works")
-const URL_CATEGORY = "http://localhost:5678/api/categories";
+const URL_CATEGORY = url + ("categories");
 const URL_LOGIN = url + ("users/login");
 
-const galleryyElement = document.getElementById("galleryy");
+const galleryyElement = document.getElementById("gallery");
 const modalAjoutElement = document.getElementById("btnModalAjout");
-const loginForm = document.getElementById("loginForm");
-const loginNavvvv = document.querySelector(".loginNav");
 
 
 
-//   S0phie
 const boutonAll = document.querySelector(".btn[data-category='all']");
 const boutonObjets = document.querySelector(".btn[data-category='objets']");
 const boutonAppart = document.querySelector(".btn[data-category='appartements']");
 const boutonHotelResto = document.querySelector(".btn[data-category='hotels-restos']");
 
-//#endregion
+const modeEdit = document.querySelector(".modeEdit");
+const loginbtn = document.querySelector(".login");
 
-//#region Class
+const modeEditElement = document.getElementById("modeEdit");
+const elementBtnModify = document.getElementById("elementBtnModify");
+
+const elementButtons = document.getElementById("elementButtons");
+const elementmodalContainer = document.getElementById("modalContainer");
+
+const galleryModale = document.getElementById("galleryModale");
+
+// Function Logout
+const logout = () => {
+  sessionStorage.removeItem("token");
+  window.location.href = "index.html";
+  loginbtn.innerHTML = "login";
+  
+};
+
+const checkToken = () => {
+  if (sessionStorage.getItem("token") != null) {
+    loginbtn.innerHTML = "Logout";
+    
+    loginbtn.addEventListener("click", () => {
+      logout();
+    });
+  } else {
+    loginbtn.innerHTML = "login";
+    loginbtn.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+  }
+};
+checkToken();
+
+
+
 class Works {
   constructor(jsonWorks) {
     jsonWorks && Object.assign(this, jsonWorks);
   }
 }
 
+
+
+
+function fetchAndDisplay(categoryId) {
+  fetch(URL_WORKS)
+    .then((data) => data.json())
+    .then((jsonListWorks) => {
+      //console.log(jsonListWorks);
+      let filteredWorks;
+      if (categoryId === "all") {
+        filteredWorks = jsonListWorks;
+      } else {
+        filteredWorks = jsonListWorks.filter(work => work.category.id === categoryId);
+      }
+
+      for (let jsonWorks of filteredWorks) {
+        let works = new Works(jsonWorks);
+
+        let figure = document.createElement("div");
+        figure.className = "figure";
+
+        let imageElement = document.createElement("img");
+        imageElement.src = works.imageUrl;
+        imageElement.alt = works.title;
+
+        let titleElement = document.createElement("p");
+        titleElement.textContent = works.title;
+
+        figure.appendChild(imageElement);
+        figure.appendChild(titleElement);
+
+        document.getElementById("gallery").appendChild(figure);
+      }
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la récupération des articles : " + error);
+    });
+}
+
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay("all");
+});
+
+boutonAll.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = ""; // Efface le contenu
+  fetchAndDisplay("all");
+});
+
+boutonObjets.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay(1);
+});
+
+boutonAppart.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay(2);
+});
+
+boutonHotelResto.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay(3);
+});
+
+// function pour ajouter ou suprimer des élément de la page index.html
+// si l'on est connecté ou non
+document.addEventListener("DOMContentLoaded", function () {
+
+  const token = sessionStorage.getItem("token");
+
+  if (token) {
+    console.log("L'utilisateur est connecté !");
+    elementButtons.remove();
+
+  } else {
+    console.log("L'utilisateur est déconnecté !!!");
+      modeEditElement.remove("conected");
+      elementBtnModify.remove();
+      elementmodalContainer.remove();
+
+  }
+});
+
+
+const modal = document.getElementById("modalContainer");
+const btn = document.getElementById("elementBtnModify");
+const close = document.getElementsByClassName("close-modal")[0];
+
+
+elementBtnModify.addEventListener("click", () => {
+
+
+  const elementBtnAll = (works) => {
+    for (let i = 0; i < works.length; i++) {
+      const card = works[i];
+      console.log(card);
+
+      const figure = document.createElement("figure");
+      const imageElement = document.createElement("img");
+      imageElement.src = card.imageUrl ?? "aucune image pour le moment";
+      const titleElement = document.createElement("figcaption");
+      titleElement.innerText = card.title ?? "aucun titre pour le moment";
+  
+      figure.appendChild(imageElement);
+      figure.appendChild(titleElement);
+      elementBtnAll.appendChild(figure);
+    }
+  };
+
+/**  document.getElementById("galleryModale").innerHTML = `
+
+  ` */
+
+})
+
+
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+close.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+
+
+
+const deleteItem = (id) => {
+  // fetch delete api with id
+};
+
+
+
+
+
+/**data.works.forEach((work) => {
+  const card = document.createElement("div");
+  card.classList.add("card");
+  const img = document.createElement("img");
+  img.src = work.image;
+  const title = document.createElement("h3");
+  title.innerHTML = work.title;
+  const description = document.createElement("p");
+  description.innerHTML = work.description;
+  const button = document.createElement("button");
+  button.innerHTML = "Delete";
+  button.addEventListener("click", deleteItem(work.id));
+  card.appendChild(img);
+  card.appendChild(title);
+  card.appendChild(description);
+  document.querySelector(".cards").appendChild(card);
+});
+ */
+
+/**
+
+ //   S0phie
+
 //#endregion
+
+
+ */
+
+
+
+
+
+/**
+
 
 //#region Function
 function fetchAndDisplay(categoryId) {
@@ -76,7 +287,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   fetchAndDisplay("all");
 });
 
-
 boutonAll.addEventListener("click", async () => {
   document.getElementById("gallery").innerHTML = ""; // Efface le contenu
   fetchAndDisplay("all");
@@ -101,28 +311,7 @@ boutonHotelResto.addEventListener("click", async () => {
 //#endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ */
 
 
 /**voir le melange de code apres le14/11 23h55
@@ -166,88 +355,8 @@ const appendToGallery = (works) => {
 
 //#region Events   S0phie
 
-/**const url = "http://localhost:5678/api/";
+/**
 
-const URL_WORKS = url + "works";
-
-const getWorks = async () => {
-  try {
-    const response = await fetch(URL_WORKS);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Erreur lors de la récupération des données');
-  }
-};
-
-const galleryElement = document.getElementById("gallery");
-
-const updateContent = async (category) => {
-  try {
-    const worksData = await getWorks();
-    let filteredCategories;
-    
-    if (category === 'all') {
-      filteredCategories = worksData;
-    } else {
-      filteredCategories = worksData.filter(work => work.categoryId === getCategoryID(category));
-    }
-
-    clearGallery();
-    appendToGallery(filteredCategories);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getCategoryID = (category) => {
-  switch (category) {
-    case "objets":
-      return 1;
-    case "appartements":
-      return 2;
-    case "hotels-restos":
-      return 3;
-    default:
-      return -1;
-  }
-};
-
-const clearGallery = () => {
-  galleryElement.innerHTML = '';
-};
-
-const appendToGallery = (works) => {
-  for (let i = 0; i < works.length; i++) {
-    const card = works[i];
-    const figure = document.createElement("figure");
-    const imageElement = document.createElement("img");
-    imageElement.src = card.imageUrl ?? "aucune image pour le moment";
-    const titleElement = document.createElement("figcaption");
-    titleElement.innerText = card.title ?? "aucun titre pour le moment";
-
-    figure.appendChild(imageElement);
-    figure.appendChild(titleElement);
-    galleryElement.appendChild(figure);
-  }
-};
-
-// Appel initial pour afficher le contenu "all" au chargement de la page
-document.addEventListener('DOMContentLoaded', async () => {
-  await updateContent('all');
-});
-
-const buttons = document.querySelectorAll(".btn");
-
-buttons.forEach(button => {
-  button.addEventListener("click", async (event) => {
-    const category = event.target.getAttribute("data-category");
-    await updateContent(category);
-  });
-});
-
-const boutonAll = document.querySelector(".btn[data-category='all']");
 
 boutonAll.addEventListener("click", async () => {
   try {
@@ -255,9 +364,8 @@ boutonAll.addEventListener("click", async () => {
   } catch (error) {
     console.log(error);
   }
-});
 
-const buttonsContainer = document.querySelector(".buttons");
+
 
 buttonsContainer.addEventListener("click", (event) => {
   const targetButton = event.target.closest(".btn");
@@ -306,27 +414,6 @@ window.onclick = function(event) {
 //#endregion
 
 
-//#region Class
-// Class Works
-class Works {
-  constructor(jsonWorks) {
-    jsonWorks && Object.assign(this, jsonWorks);
-  }
-}
-// Class Categories
-class Category {
-  constructor(jsonCats) {
-    jsonCats && Object.assign(this, jsonCats);
-  }
-}
-
-class Login {
-  constructor(email, password) {
-    this.email = email;
-    this.password = password;
-  }
-}
-//#endregion
 
 //#region Methods
 
@@ -348,135 +435,6 @@ const deleteWork = async (id) => {
   return data;
 };
 
-// Logout
-const logout = () => {
-  localStorage.removeItem("token");
-  const a = document.createElement("a");
-  a.href = "login.html";
-  a.innerHTML = "Login";
-  a.addEventListener("click", () => {
-    logout();
-  });
-
-  loginNav.innerHTML = "";
-  loginNav.appendChild(a);
-};
-
-
-
-//#endregion
-
-
-//#region Function
-
-// Fetch des articles (works)
-const elementBtnAll = document.getElementById("btnAll");
-const worksContainer = document.getElementById("gallery"); 
-
-elementBtnAll.addEventListener("click", () => {
-  fetch(URL_WORKS)
-    .then((data) => data.json())
-    .then((jsonListWorks) => {
-      worksContainer.innerHTML = ""; 
-
-      for (let jsonWorks of jsonListWorks) {
-        let works = new Works(jsonWorks);
-        console.log(works);
-        worksContainer.innerHTML += `
-        <div id="figure">
-          <img id="img" src="${works.imageUrl}" alt="section de toutes les images">
-          <p id="para">${works.title}</p>
-        </div>
-        `;
-      }
-    })
-    .catch((error) => {
-      console.error("Erreur lors de la récupération des données : " + error);
-    });
-});
-
-
-
-
-const elementBtnObjets = document.getElementById("btnObjets");
-const worksContainerObjets = document.getElementById("gallery");
-
-  elementBtnObjets.addEventListener("click", () => {
-    fetch(URL_WORKS)
-      .then((data) => data.json())
-      .then((jsonListWorks) => {
-        gallery.innerHTML = "";
-        for (let jsonWorks of jsonListWorks) {
-          let works = new Works(jsonWorks);
-  
-          if (works.category && works.category.name === "Objets") {
-            gallery.innerHTML += `
-              <div id="figure">
-                <img src="${works.imageUrl}" alt="${works.title}">
-                <p>${works.title}</p>
-              </div>
-            `;
-          }
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data: " + error);
-      });
-  });
-
-
-  const elementBtnApp = document.getElementById("btnApp");
-  elementBtnApp.addEventListener("click", () => {
-    //const categoryId = 1; // Replace with the actual category ID for "Objets"
-  
-    fetch(URL_WORKS)
-      .then((data) => data.json())
-      .then((jsonListWorks) => {
-        gallery.innerHTML = "";
-        for (let jsonWorks of jsonListWorks) {
-          let works = new Works(jsonWorks);
-  
-          if (works.category && works.category.name === "Appartements") {
-            gallery.innerHTML += `
-              <div id="figure">
-                <img src="${works.imageUrl}" alt="${works.title}">
-                <p>${works.title}</p>
-              </div>
-            `;
-          }
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data: " + error);
-      });
-  });
-
-
-  const elementBtnHotelResto = document.getElementById("btnHotelResto");
-  elementBtnHotelResto.addEventListener("click", () => {
-  
-    fetch(URL_WORKS)
-      .then((data) => data.json())
-      .then((jsonListWorks) => {
-        gallery.innerHTML = "";
-        for (let jsonWorks of jsonListWorks) {
-          let works = new Works(jsonWorks);
-  
-          if (works.category && works.category.name === "Hotels & restaurants") {
-            gallery.innerHTML += `
-              <div id="figure">
-                <img src="${works.imageUrl}" alt="${works.title}">
-                <p>${works.title}</p>
-              </div>
-            `;
-          }
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data: " + error);
-      });
-  });
-
 
 
 
@@ -492,10 +450,6 @@ fetch(URL_CATEGORY)
 
     console.log(Categorys);
     
-//categoryId: 2
-
-
-
   }
 })
 .catch((error) => {
