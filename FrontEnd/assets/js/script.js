@@ -27,18 +27,21 @@ const elementmodalContainer = document.getElementById("modalContainer");
 
 const galleryModale = document.getElementById("galleryModale");
 
+const myBtnModal = document.getElementById("myBtn");
+
+
 // Function Logout
 const logout = () => {
   sessionStorage.removeItem("token");
   window.location.href = "index.html";
   loginbtn.innerHTML = "login";
-  
+
 };
 
 const checkToken = () => {
   if (sessionStorage.getItem("token") != null) {
     loginbtn.innerHTML = "Logout";
-    
+
     loginbtn.addEventListener("click", () => {
       logout();
     });
@@ -137,15 +140,61 @@ document.addEventListener("DOMContentLoaded", function () {
 
   } else {
     console.log("L'utilisateur est déconnecté !!!");
-      modeEditElement.remove("conected");
-      elementBtnModify.remove();
-      elementmodalContainer.remove();
+    modeEditElement.remove("conected");
+    myBtnModal.remove();
 
   }
 });
 
 
-const modal = document.querySelector(".modal-container");
+
+
+//galleryModale
+
+function fetchForModal() {
+  // Efface le contenu de la galerie avant d'ajouter de nouveaux éléments
+  document.getElementById("galleryModale").innerHTML = "";
+  fetch(URL_WORKS)
+    .then((data) => data.json())
+    .then((jsonListWorks) => {
+      //console.log(jsonListWorks);
+
+      for (let jsonWorks of jsonListWorks) {
+        let works = new Works(jsonWorks);
+
+        let figure = document.createElement("div");
+        figure.className = "figure";
+
+        let imageElement = document.createElement("img");
+        imageElement.src = works.imageUrl;
+
+        let iconSpan = document.createElement("span");
+
+
+        let iconTrash = document.createElement("i");
+        iconTrash.className = "fa-regular fa-trash-can";
+
+
+        figure.appendChild(iconSpan);
+
+        iconSpan.appendChild(iconTrash);
+
+
+
+        figure.appendChild(imageElement);
+
+
+        document.getElementById("galleryModale").appendChild(figure);
+      }
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la récupération des articles : " + error);
+    });
+}
+
+
+
+/**const modal = document.querySelector(".modal-container");
 //const btn = document.getElementById("elementBtnModify");
 const close = document.getElementsByClassName("close-modal")[0];
 const modalBtnn = document.querySelector(".modal-btn")
@@ -179,21 +228,52 @@ console.log(modalBtnn);
 
 
 
-modalBtnn.onclick = function() {
-  console.log("helloooooooooo");
+
+
+ */
+
+
+
+
+
+
+
+
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function () {
   modal.style.display = "block";
-  
+  fetchForModal();
 }
 
-close.onclick = function() {
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
   modal.style.display = "none";
 }
 
-window.onclick = function(event) {
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
 }
+
+
+
+
+
+
+
+
+
 
 
 

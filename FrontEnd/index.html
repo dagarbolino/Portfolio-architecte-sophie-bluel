@@ -53,29 +53,23 @@
 			</article>
 		</section>
 		<section id="portfolio">
-			<!-- <div></div> -->
-			<button id="elementBtnModify" class="modal-btn modal-trigger">modifier
-				<i class="fa-regular fa-pen-to-square"></i>
-			</button>
 
-			<div id="modalContainer" class="modal-container">
-				<div class="overlay modal-trigger"></div>
+			<div id="myModal" class="modal">
 
-				<div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="dialogDesc">
-					<button aria-label="close modal" class="close-modal modal-trigger">X</button>
-
-					<h1 id="modalTitle">Galerie photo</h1>
-					
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<h2>Galerie photo</h2>
 					<div class="galleryModale" id="galleryModale"></div>
-
+					<div class="line"></div>
 					<button class="btnModalAjout" type="button">Ajouter une photo</button>
 				</div>
 			</div>
 
-			<div class="gallery" id="galleryModale"></div>
+			<button id="myBtn">
+				<i class="fa-regular fa-pen-to-square">modifier</i>
+			</button>
 
 			<h2>Mes Projets</h2>
-
 
 
 			<div id="elementButtons" class="buttons">
