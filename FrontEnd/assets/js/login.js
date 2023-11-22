@@ -6,6 +6,7 @@
 
 //#region Variables
 
+
 const url = "http://localhost:5678/api/";
 const URL_WORKS = url + "works";
 const URL_LOGIN = url + "users/login";
@@ -73,13 +74,15 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         body: JSON.stringify(loginData)
       });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      if (response.ok) {
+        const responseData = await response.json();
+        sessionStorage.setItem("token", responseData.token);
+        window.location.href = "index.html";
+      } else {
+        const err = await response.json();
+        console.error(err);
       }
-      const responseData = await response.json();
-      console.log(responseData);
-      sessionStorage.setItem("token", responseData.token);
-      return responseData;
+      
     } catch (error) {
       console.error("Erreur lors de la connexion : " + error.message);
     }

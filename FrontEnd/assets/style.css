@@ -401,127 +401,6 @@ footer nav ul {
 	font-weight: 400;
 	cursor: pointer;
 }
-/*
-.modal-container {
-                  display: none; 
-	visibility: hidden;
-	position: fixed;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	
-}
-
-.modal-container.active {
-	                       display: block; 
-	visibility: visible;
-}
-
-.overlay {
-	opacity: 1;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background: #333333d3;
-	transition: opacity 0.4s 0.2s ease-out;
-}
-
-.modal-container.active .overlay {
-	opacity: 1;
-	transition: opacity 0.4s ease-out;
-}
-
-.modal {
-	opacity: 0;
-	width: 370px;
-	max-width: 360px;
-	min-width: 200px;
-	padding: 20px 40px 20px 40px;
-	background: #fff;
-	border-radius: 5px;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-
-	padding: 30px;
-	max-width: calc(100vw - 20px);
-	max-height: calc(100vh - 20px);
-	overflow: auto;
-
-}
-
-
-.modal-container.active {
-	background: none;
-}
-
-.modal-container.active .modal {
-	opacity: 1;
-	transform: translate(-50%, -50%);
-	transition: opacity 0.4s 0.2s ease-out;
-	transform: 0.4s 0.2s ease-out;
-}
-
-.close-modal {
-	padding: 8px 10px;
-	border: none;
-	border-radius: 5px;
-	font-size: 18px;
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	cursor: pointer;
-	background: #ff365e;
-	color: #fff;
-}
-
-.modal h1 {
-	color: black;
-	margin: 20px 0px 30px 110px;
-	font-family: Montserrat, sans-serif;
-	font-weight: 500;
-}
-
-#galleryModale  {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-column-gap: 10px;
-	grid-row-gap: 10px;
-}
-
-#galleryModale .figure {
-	display: flex;
-}
-
-
-
-#galleryModale img {
-	width: 80px;
-}
-
-#galleryModale close {
-	color: black;
-	position: absolute;
-	width: 78px;
-	height: 20px;
-	display: flex;
-	justify-content: end;
-	align-items: center;
-}
-
-
-
-.btnModalAjout {
-	width: 200px;
-	height: 25px;
-	margin: 50px 85px 30px 85px;
-	color: white;
-	background: #1d6154;
-	border: none;
-	border-radius: 20px;
-}
-*/
-
 
 
 /*logout*/
@@ -572,17 +451,23 @@ footer nav ul {
 	justify-items: center;
 }
 
-#galleryModale .figure {
+#galleryModale .figureModal {
 	display: flex;
-	width: 60px;
+	width: 180px;
+	flex-direction: row-reverse;
+	
 }
 
-#galleryModale .figure span i {
+#galleryModale span {
 	position: absolute;
-	width: 10px;
-	height: 10px;
-	color: black;
+	color: white;
+	background: black;
+	font-size: 10px;
+	margin: 4px;
+	padding: 3px;
 }
+
+/* Style de la corbeille */
 
 
 
