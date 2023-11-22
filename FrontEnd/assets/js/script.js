@@ -7,7 +7,7 @@ const URL_LOGIN = url + "users/login";
 
 const galleryyElement = document.getElementById("gallery");
 const modalAjoutElement = document.getElementById("btnModalAjout");
-
+const btnModalAjout = document.querySelector(".btnModalAjout");
 
 
 const boutonAll = document.querySelector(".btn[data-category='all']");
@@ -67,30 +67,25 @@ class Works {
 function fetchAndDisplay(categoryId) {
   const tokensss = localStorage.getItem("token");
   const token = sessionStorage.getItem("token");
-  
+
   console.log(token);
   console.log(tokensss);
-  
 
   if (!token) {
     console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
     return;
   }
-  
 
   fetch(URL_WORKS)
-
-  
     .then((data) => data.json())
     .then((jsonListWorks) => {
       //console.log(jsonListWorks);
-
       const token = sessionStorage.getItem("token");
 
-if (!token) {
-  console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
-  return;
-}
+      if (!token) {
+        console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
+        return;
+      }
 
       let filteredWorks;
       if (categoryId === "all") {
@@ -152,21 +147,14 @@ boutonHotelResto.addEventListener("click", async () => {
 
 
 
-
-
-
 //galleryModale
+
 function fetchForModal() {
-
   const token = sessionStorage.getItem("token");
-
-if (!token) {
-  console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
-  return;
-}
-
-
-
+  if (!token) {
+    console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
+    return;
+  }
   document.getElementById("galleryModale").innerHTML = "";
 
   fetch(URL_WORKS)
@@ -218,9 +206,105 @@ if (!token) {
     });
 }
 
+// Add work  btnModalAjout 
+const addWork = async (id) => {
+
+  const token = sessionStorage.getItem("token");
+  console.log(token);
+  if (!token) {
+    console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
+    return;
+  }
+
+  const response = await fetch(`${url}works/`, {
+    method: "POST",
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'multipart/form-data'
+    },
+  });
+
+  if (response.status === 401) {
+    throw new Error("Unauthorized");
+  }
+
+  if (response.status === 200) {
+    return "Work add";
+  }
+
+  return data;
+};
+
+
+btnModalAjout.addEventListener("click", async function () {
+  console.log("Boutton cliquée ");
+  // Afficher la modale vidé
+  document.querySelector(".modal-content").innerHTML = "";
+
+  let formAddWorkModal = document.createElement("div");
+  formAddWorkModal.className = "modal-content";
+  formAddWorkModal.innerHTML += `
+
+        <span class="back">&#129104;</span>
+        <span class="close">&times;</span>
+
+        <h2>Ajout photo</h2><br><br>
+       
+        <form action="#" method="post" enctype="multipart/form-data" id="photoForm">
+        <div class="addImgModale">
+            <img src="" alt="" id="previewImage">
+
+          <label for="photo">+ Ajouter une photo</label>
+
+          <input type="file" name="photo" id="photo" accept="image/*">
+              <p>jpg, png : 4mo max</p>
+          //<input type="file" name="photo" id="photo" accept="image/*" onchange="previewImage()">
+        </div><br><br>
+
+          <label for="title">Titre</label>
+          <input type="text" name="title" id="title"><br><br>
+        
+          <label for="categories">Catégories</label>
+          <select name="categories" id="categories">
+            <option value=""></option>
+            <option value="objets">Objets</option>
+            <option value="appartements">Appartements</option>
+            <option value="hotels-restos">Hôtels & restaurants</option>
+          </select>
+
+          <input type="submit" value="Valider">
+        </form>
+  
+  `;
+
+  document.getElementById("myModal").appendChild(formAddWorkModal);
+
+
+
+
+});
+
+
+/**{
+  "id": 0,
+  "title": "string",
+  "imageUrl": "string",
+  "categoryId": "string",
+  "userId": 0
+} */
+
+/**curl -X 'POST' \
+  'http://localhost:5678/api/works' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'image=' \
+  -F 'title=' \
+  -F 'category=' */
+
+
+
+
 // Delete work
-
-
 
 const deleteWork = async (id) => {
 
@@ -230,7 +314,6 @@ const deleteWork = async (id) => {
     console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
     return;
   }
-  
 
   const response = await fetch(`${url}works/${id}`, {
     method: "DELETE",
@@ -252,9 +335,6 @@ const deleteWork = async (id) => {
 };
 
 
-
-
-
 let figures = document.getElementsByClassName("figureModale");
 
 for (let i = 0; i < figures.length; i++) {
@@ -262,7 +342,7 @@ for (let i = 0; i < figures.length; i++) {
     console.log("Figure cliquée :", figures[i]);
 
     // Récupére l'ID associée à cette figure
-    let workId = jsonListWorks[i].id; 
+    let workId = jsonListWorks[i].id;
     console.log(workId);
 
     try {
@@ -279,6 +359,10 @@ for (let i = 0; i < figures.length; i++) {
     }
   });
 }
+
+
+
+
 
 
 
@@ -328,9 +412,5 @@ window.onclick = function (event) {
 
 
 
-
 //  S0phie
-
-
-
 
