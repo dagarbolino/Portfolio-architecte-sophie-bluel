@@ -487,10 +487,10 @@ footer nav ul {
 .modal-content {
   background-color: white;
   margin: auto;
-  padding: 20px;
+  padding: 40px;
 	top: 0;
   border: 1px solid #888;
-  width: 80%;
+  width: 60%;
 	max-width: 450px;
 	height: auto;
 }
@@ -515,6 +515,21 @@ footer nav ul {
 	font-weight: 500;
 }
 
+.back {
+	float: left;
+	color: #fff;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	padding: 8px 10px;
+	border: none;
+	border-radius: 5px;
+	font-size: 26px;
+	cursor: pointer;
+	color: black;
+	font-weight: 500;
+}
+
 .close:hover,
 .close:focus {
   color: white;
@@ -522,6 +537,35 @@ footer nav ul {
   text-decoration: none;
   cursor: pointer;
 	font-weight: 600;
+}
+
+.back:hover,
+.back:focus {
+  color: white;
+	background-color: rgb(184, 182, 182);
+  text-decoration: none;
+  cursor: pointer;
+	font-weight: 600;
+}
+
+
+
+
+/* Parti modale ajout photo*/
+
+.addImgModale {
+	background: #E8F1F6;
+	width: auto;
+	height: 120px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+#photoForm {
+	display: flex;
+	flex-direction: column;
 }
 
 .btnModalAjout {
@@ -536,7 +580,6 @@ footer nav ul {
 	border: none;
 	border-radius: 20px;
 }
-
 .line {
 	margin: auto;
 	margin-bottom: 30px;

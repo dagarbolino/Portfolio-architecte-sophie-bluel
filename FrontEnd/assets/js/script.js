@@ -206,84 +206,62 @@ function fetchForModal() {
     });
 }
 
-// Add work  btnModalAjout 
-const addWork = async (id) => {
 
-  const token = sessionStorage.getItem("token");
-  console.log(token);
-  if (!token) {
-    console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
-    return;
-  }
-
-  const response = await fetch(`${url}works/`, {
-    method: "POST",
-    headers: {
-      'accept': 'application/json',
-      'Content-Type': 'multipart/form-data'
-    },
-  });
-
-  if (response.status === 401) {
-    throw new Error("Unauthorized");
-  }
-
-  if (response.status === 200) {
-    return "Work add";
-  }
-
-  return data;
-};
-
-
+//btnModalAjout 
 btnModalAjout.addEventListener("click", async function () {
   console.log("Boutton cliquée ");
-  // Afficher la modale vidé
-  document.querySelector(".modal-content").innerHTML = "";
-
-  let formAddWorkModal = document.createElement("div");
-  formAddWorkModal.className = "modal-content";
-  formAddWorkModal.innerHTML += `
-
-        <span class="back">&#129104;</span>
-        <span class="close">&times;</span>
-
-        <h2>Ajout photo</h2><br><br>
-       
-        <form action="#" method="post" enctype="multipart/form-data" id="photoForm">
-        <div class="addImgModale">
-            <img src="" alt="" id="previewImage">
-
-          <label for="photo">+ Ajouter une photo</label>
-
-          <input type="file" name="photo" id="photo" accept="image/*">
-              <p>jpg, png : 4mo max</p>
-          //<input type="file" name="photo" id="photo" accept="image/*" onchange="previewImage()">
-        </div><br><br>
-
-          <label for="title">Titre</label>
-          <input type="text" name="title" id="title"><br><br>
-        
-          <label for="categories">Catégories</label>
-          <select name="categories" id="categories">
-            <option value=""></option>
-            <option value="objets">Objets</option>
-            <option value="appartements">Appartements</option>
-            <option value="hotels-restos">Hôtels & restaurants</option>
-          </select>
-
-          <input type="submit" value="Valider">
-        </form>
-  
+  const modalH2 = document.querySelector(".modal-content h2");
+  modalH2.innerHTML = `
+  <h2>Ajout photo</h2>
   `;
+  document.getElementById("galleryModale").innerHTML = "";
 
+  const modalLine = document.querySelector(".modal-content .line");
+  modalLine.className = "display-none;"
+
+  const modalAjoutBtn = document.querySelector(".deleteBtnAjoutModal");
+  modalAjoutBtn.innerHTML = ``;
+
+  const divFormAddPhoto = document.createElement("div");
+  divFormAddPhoto.className = "formAddPhoto";
+
+  const spanAddPhoto = document.createElement("span");
+  spanAddPhoto.className = "back";
+  spanAddPhoto.innerHTML = `&#129104;`
+
+  const divForm = document.createElement("div");
+  divForm.className = "divFormAdd";
+  divForm.innerHTML = `
+  <form action="#" method="post" enctype="multipart/form-data" id="photoForm">
+  <div class="addImgModale">
+      <img src="" alt="" id="previewImage">
+
+    <label for="photo">+ Ajouter une photo</label>
+    <input type="file" name="photo" id="photo" accept="image/*" onchange="previewImage()">
+        <p>jpg, png : 4mo max</p>
+  </div>
+    <label for="title">Titre</label>
+    <input type="text" name="title" id="title"><br><br>
+  
+    <label for="categories">Catégories</label>
+    <select name="categories" id="categories">
+      <option value=""></option>
+      <option value="objets">Objets</option>
+      <option value="appartements">Appartements</option>
+      <option value="hotels-restos">Hôtels & restaurants</option>
+    </select>
+
+    <input type="submit" value="Valider">
+    <input type="reset" value="Réinitialiser">
+  </form>
+  `
+  let formAddWorkModal = document.createElement("div");
+  
   document.getElementById("myModal").appendChild(formAddWorkModal);
-
-
-
-
+  document.querySelector(".modal-content").appendChild(divFormAddPhoto);
+  document.querySelector(".modal-content").appendChild(divForm);
+  document.querySelector(".spanModal").appendChild(spanAddPhoto);
 });
-
 
 /**{
   "id": 0,
@@ -293,14 +271,51 @@ btnModalAjout.addEventListener("click", async function () {
   "userId": 0
 } */
 
-/**curl -X 'POST' \
-  'http://localhost:5678/api/works' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'image=' \
-  -F 'title=' \
-  -F 'category=' */
+const addWork = async () => {
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
+    return;
+  }
 
+  const form = document.getElementById("photoForm");
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch(`${url}works/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401) {
+      throw new Error("Non autorisé");
+    }
+
+    if (response.status === 200) {
+      return "Œuvre ajoutée";
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de l'ajout de l'œuvre : ", error.message);
+  }
+};
+
+const photoForm = document.getElementById("photoForm");
+
+if (photoForm) {
+  photoForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const response = await addWork();
+    console.log(response);
+  });
+} else {
+  console.error("L'élément avec l'id 'photoForm' n'a pas été trouvé.");
+}
 
 
 
@@ -361,11 +376,6 @@ for (let i = 0; i < figures.length; i++) {
 }
 
 
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
 
   const token = sessionStorage.getItem("token");
@@ -381,9 +391,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
 });
-
-
-
 
 
 const modal = document.getElementById("myModal");
@@ -413,4 +420,5 @@ window.onclick = function (event) {
 
 
 //  S0phie
+
 
