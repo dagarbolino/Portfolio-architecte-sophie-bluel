@@ -65,11 +65,11 @@ class Works {
 
 
 function fetchAndDisplay(categoryId) {
-  const tokensss = localStorage.getItem("token");
+  //const tokensss = localStorage.getItem("token");
   const token = sessionStorage.getItem("token");
 
   console.log(token);
-  console.log(tokensss);
+  //console.log(tokensss);
 
   if (!token) {
     console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
@@ -207,115 +207,233 @@ function fetchForModal() {
 }
 
 
-//btnModalAjout 
-btnModalAjout.addEventListener("click", async function () {
-  console.log("Boutton cliquée ");
-  const modalH2 = document.querySelector(".modal-content h2");
-  modalH2.innerHTML = `
+
+
+
+
+
+  function fetchForPhoto() {
+
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
+      return;
+    }
+    //  je construit ma page .....
+
+    const modalH2 = document.querySelector(".modal-content h2");
+    modalH2.innerHTML = `
   <h2>Ajout photo</h2>
   `;
-  document.getElementById("galleryModale").innerHTML = "";
 
-  const modalLine = document.querySelector(".modal-content .line");
-  modalLine.className = "display-none;"
+    document.getElementById("galleryModale").innerHTML = ``;
 
-  const modalAjoutBtn = document.querySelector(".deleteBtnAjoutModal");
-  modalAjoutBtn.innerHTML = ``;
+    const modalLine = document.querySelector(".modal-content .line");
+    modalLine.className = "hide";
 
-  const divFormAddPhoto = document.createElement("div");
-  divFormAddPhoto.className = "formAddPhoto";
+    const modalAjoutBtn = document.querySelector(".deleteBtnAjoutModal");
+    modalAjoutBtn.innerHTML = ``;
 
-  const spanAddPhoto = document.createElement("span");
-  spanAddPhoto.className = "back";
-  spanAddPhoto.innerHTML = `&#129104;`
+    const spanAddPhoto = document.createElement("span");
+    spanAddPhoto.className = "back";
+    spanAddPhoto.innerHTML = `&#129104;`
 
-  const divForm = document.createElement("div");
-  divForm.className = "divFormAdd";
-  divForm.innerHTML = `
-  <form action="#" method="post" enctype="multipart/form-data" id="photoForm">
-  <div class="addImgModale">
-      <img src="" alt="" id="previewImage">
-
-    <label for="photo">+ Ajouter une photo</label>
-    <input type="file" name="photo" id="photo" accept="image/*" onchange="previewImage()">
-        <p>jpg, png : 4mo max</p>
-  </div>
-    <label for="title">Titre</label>
-    <input type="text" name="title" id="title"><br><br>
   
-    <label for="categories">Catégories</label>
-    <select name="categories" id="categories">
-      <option value=""></option>
-      <option value="objets">Objets</option>
-      <option value="appartements">Appartements</option>
-      <option value="hotels-restos">Hôtels & restaurants</option>
-    </select>
 
-    <input type="submit" value="Valider">
-    <input type="reset" value="Réinitialiser">
-  </form>
-  `
-  let formAddWorkModal = document.createElement("div");
+
+    // Formulaire
+
+    const form = document.createElement("form");
+    form.action = "#";
+    form.method = "post";
+    form.enctype = "multipart/form-data";
+    form.id = "photoForm";
+
+    // Ajoute le contenu du formulaire
+    const addImgModaleDiv = document.createElement("div");
+    addImgModaleDiv.className = "addImgModale";
+
+    const label = document.createElement("label");
+    label.for = "photo";
+    label.className = "custom-file-input";
+    label.innerHTML = '<i class="fa-solid fa-image"></i>';
+
+    // Bouton ajouter une photo
+    const fileButton = document.createElement("button");
+    fileButton.type = "button";
+    fileButton.textContent = "Ajouter une photo";
+
+    // Elément de fichier
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.name = "photo";
+    fileInput.id = "photo";
+    fileInput.accept = "image/*";
+    fileInput.style.display = "none";
+
+    const p = document.createElement("p");
+    p.textContent = "jpg, png : 4mo max";
+
+    addImgModaleDiv.appendChild(label);
+    addImgModaleDiv.appendChild(fileButton);
+    addImgModaleDiv.appendChild(p);
+
+    
+
+    const labelTitle = document.createElement("label");
+    labelTitle.for = "title";
+    labelTitle.textContent = "Titre";
+
+    const inputTitle = document.createElement("input");
+    inputTitle.type = "text";
+    inputTitle.name = "title";
+    inputTitle.id = "title";
+
+    const labelCategories = document.createElement("label");
+    labelCategories.for = "categories";
+    labelCategories.textContent = "Catégories";
+
+    const selectCategories = document.createElement("select");
+    selectCategories.name = "categories";
+    selectCategories.id = "categories";
+
+    const optionDefault = document.createElement("option");
+    selectCategories.appendChild(optionDefault);
+
+    const optionObjets = document.createElement("option");
+    optionObjets.value = "objets";
+    optionObjets.textContent = "Objets";
+    selectCategories.appendChild(optionObjets);
+
+    const optionAppartements = document.createElement("option");
+    optionAppartements.value = "appartements";
+    optionAppartements.textContent = "Appartements";
+    selectCategories.appendChild(optionAppartements);
+
+    const optionHotelsRestos = document.createElement("option");
+    optionHotelsRestos.value = "hotels-restos";
+    optionHotelsRestos.textContent = "Hôtels & restaurants";
+    selectCategories.appendChild(optionHotelsRestos);
+
+    const submitBtn = document.createElement("input");
+    submitBtn.type = "submit";
+    submitBtn.value = "Valider";
+
+    form.appendChild(addImgModaleDiv);
+    form.appendChild(labelTitle);
+    form.appendChild(inputTitle);
+    form.appendChild(labelCategories);
+    form.appendChild(selectCategories);
+    form.appendChild(submitBtn);
+
+    const divForm = document.createElement("div");
+    divForm.className = "divFormAdd";
+    divForm.appendChild(form);
+
+    modalAjoutBtn.appendChild(spanAddPhoto);
+    modalAjoutBtn.appendChild(divForm);
+
   
-  document.getElementById("myModal").appendChild(formAddWorkModal);
-  document.querySelector(".modal-content").appendChild(divFormAddPhoto);
-  document.querySelector(".modal-content").appendChild(divForm);
-  document.querySelector(".spanModal").appendChild(spanAddPhoto);
-});
 
-/**{
-  "id": 0,
-  "title": "string",
-  "imageUrl": "string",
-  "categoryId": "string",
-  "userId": 0
-} */
+    modalAjoutBtn.appendChild(spanAddPhoto);
 
-const addWork = async () => {
-  const token = sessionStorage.getItem("token");
-  if (!token) {
-    console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
-    return;
-  }
 
-  const form = document.getElementById("photoForm");
-  const formData = new FormData(form);
-
-  try {
-    const response = await fetch(`${url}works/`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
+    fileButton.addEventListener("click", function () {
+      fileInput.click();
     });
 
-    if (response.status === 401) {
-      throw new Error("Non autorisé");
+    addImgModaleDiv.appendChild(fileButton);
+    addImgModaleDiv.appendChild(fileInput);
+
+
+    const formAddWorkModal = document.createElement("div");
+    formAddWorkModal.appendChild(divForm);
+
+    document.querySelector(".modal-content").appendChild(formAddWorkModal);
+    document.querySelector(".spanModal").appendChild(spanAddPhoto);
+
+
+    
+    // faire mon appel fetch
+
+    const addWork = async () => {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        console.error("Token manquant. L'utilisateur n'est peut-être pas connecté.");
+        return;
+      }
+    /**----------- */
+
+    const form = document.querySelector(".divFormAdd form");
+    const formData = new FormData(form);
+    
+    try {
+      const response = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {
+
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      console.log(formData);
+      //console.log(formData(JSON.stringify));
+      console.log(response);
+
+      } catch (error) {
+        console.error("Erreur lors de l'ajout de l'œuvre : ", error.message);
+        throw error; 
+      }
+      
+    };
+
+
+     /**----------- */
+    const photoForm = document.querySelector(".divFormAdd form"); 
+    
+    if (photoForm) {
+      photoForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        try {
+          const response = await addWork();
+          console.log(response);
+
+    //console.log(formData);
+
+        } catch (error) {
+          console.error("Erreur lors de l'ajout de l'œuvre : ", error.message);
+        }
+      });
+    } else {
+      console.error("L'élément avec l'id 'photoForm' n'a pas été trouvé.");
     }
 
-    if (response.status === 200) {
-      return "Œuvre ajoutée";
-    }
+  };
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Erreur lors de l'ajout de l'œuvre : ", error.message);
-  }
-};
 
-const photoForm = document.getElementById("photoForm");
 
-if (photoForm) {
-  photoForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const response = await addWork();
-    console.log(response);
-  });
-} else {
-  console.error("L'élément avec l'id 'photoForm' n'a pas été trouvé.");
-}
+
+
+
+
+
+  
+
+  /**{
+    "id": 0,
+    "title": "string",
+    "imageUrl": "string",
+    "categoryId": "string",
+    "userId": 0
+  } */
+
+
+
+
+
+
+
 
 
 
@@ -394,8 +512,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 const modal = document.getElementById("myModal");
+
 const btn = document.getElementById("myBtn");
+const btnAjoutPhoto = document.querySelector(".btnModalAjout");
+
 const span = document.getElementsByClassName("close")[0];
+
+btnAjoutPhoto.onclick = function () {
+  modal.style.display = "block";
+  fetchForPhoto();
+}
 
 btn.onclick = function () {
   modal.style.display = "block";
