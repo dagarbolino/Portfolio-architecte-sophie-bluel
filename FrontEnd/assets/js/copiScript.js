@@ -32,11 +32,11 @@ const myBtnModal = document.getElementById("myBtn");
 const modal = document.getElementById("myModal");
 const btn = document.getElementById("myBtn");
 const btnAjoutPhoto = document.querySelector(".btnModalAjout");
+const spanClose = document.getElementsByClassName("close")[0];
 
 const span = document.querySelector(".spanModal");
 
-const btnModal2CloseClick = document.querySelector(".spansModal2");
-
+const modalContenttt = document.querySelector(".modal-content")
 
 
 //#endregion
@@ -192,7 +192,7 @@ function fetchForModal() {
         iconSpan.appendChild(trashIcon);
         figureModals.appendChild(iconSpan);
         figureModals.appendChild(imageElement);
-
+ 
 
 
         document.querySelector(".spanModal").innerHTML = "";
@@ -209,19 +209,6 @@ function fetchForModal() {
     });
 }
 
-
-// Créer le bouton de fermeture
-const btnModal2Close = document.createElement("button");
-btnModal2Close.className = "btnModal2Close";
-btnModal2Close.innerHTML = `&times`;
-
-// Créer le bouton de retour
-const btnModal2Back = document.createElement("button");
-btnModal2Back.className = "btnModal2Back";
-btnModal2Back.innerHTML = `&#129060`;
-
-
-
 function fetchForPhoto() {
   const token = sessionStorage.getItem("token");
   if (!token) {
@@ -230,32 +217,8 @@ function fetchForPhoto() {
     );
     return;
   }
-
+  //  je construit ma page .....
   //#region constante pour fetchForPhoto
-// modal2-content
-
-
-
-// Sélectionner l'élément .spans
-const spansModal2 = document.querySelector(".spans");
-
-// Effacer le contenu actuel de .spans
-spansModal2.innerHTML = "";
-
-// Ajouter la classe .spansModal2
-spansModal2.className = "spansModal2";
-
-
-
-
-
-
-
-// Ajouter les boutons à .spansModal2
-spansModal2.appendChild(btnModal2Close);
-spansModal2.appendChild(btnModal2Back);
-
- 
 
 
   const modalH2 = document.querySelector(".modal-content h2");
@@ -263,7 +226,16 @@ spansModal2.appendChild(btnModal2Back);
   <h2>Ajout photo</h2>
   `;
 
+  const divSpanp = document.createElement("span")
+  divSpanp.className = ("spanModalBack")
 
+  const spanModale2 = document.querySelector(".spans")
+  spanModale2.appendChild(divSpanp)
+
+  document.querySelector(".spanModalBack").innerHTML = "";
+  document.querySelector(".spanModalBack").innerHTML = `&#129060`;
+
+  //spanModalBack.style.opacity = 1;
 
 
   document.getElementById("galleryModale").innerHTML = ``;
@@ -274,8 +246,7 @@ spansModal2.appendChild(btnModal2Back);
   const modalAjoutBtn = document.querySelector(".deleteBtnAjoutModal");
   modalAjoutBtn.innerHTML = ``;
 
-
-
+  const spanAddPhoto = document.createElement("span");
 
 
   //#endregion
@@ -283,10 +254,6 @@ spansModal2.appendChild(btnModal2Back);
   //#region  constante formulaire pour add works
 
   // Fonction de mappage pour les catégories
-
-
-
-  
   function mapCategoryValue(category) {
     const categoryMap = {
       objets: 1,
@@ -295,8 +262,6 @@ spansModal2.appendChild(btnModal2Back);
     };
     return categoryMap[category.toLowerCase()] || null;
   }
-
-
   //S0phie
   const form = document.createElement("form");
   form.action = "#";
@@ -313,8 +278,6 @@ spansModal2.appendChild(btnModal2Back);
       let formData = new FormData();
       formData.append("image", form.elements.photo.files[0]);
       formData.append("title", form.elements.title.value);
-      console.log(formData.append("image", form.elements.photo.files[0]));
-      console.log(formData.append("title", form.elements.title.value));
 
       const categoryId = mapCategoryValue(form.elements.categories.value);
 
@@ -395,7 +358,7 @@ spansModal2.appendChild(btnModal2Back);
   addImgModaleDiv.appendChild(pModaleDiv);
 
   // elément preview
-
+  //console.log(fileInput);
   const divPreview = document.createElement("div");
   divPreview.className = "addElementPreview";
   divPreview.style.opacity = 0;
@@ -403,30 +366,6 @@ spansModal2.appendChild(btnModal2Back);
   fileInput.addEventListener("change", updateImageDisplay);
 
   addImgModaleDiv.appendChild(divPreview);
-
-  function updateImageDisplay() {
-    while (divPreview.firstChild) {
-      divPreview.removeChild(divPreview.firstChild);
-    }
-    const curFiles = fileInput.files;
-
-    for (const file of curFiles) {
-      addImgModaleDiv.innerHTML = "";
-      const image = document.createElement("img");
-      image.src = window.URL.createObjectURL(file);
-      addImgModaleDiv.appendChild(divPreview);
-      image.className = "addImgModale";
-
-      divPreview.appendChild(image);
-      console.log(image);
-
-
-
-    }
-    divPreview.style.opacity = 1;
-
-  }
-
 
 
 
@@ -492,11 +431,10 @@ spansModal2.appendChild(btnModal2Back);
   divForm.className = "divFormAdd";
   divForm.appendChild(form);
 
-
-
+  modalAjoutBtn.appendChild(spanAddPhoto);
   modalAjoutBtn.appendChild(divForm);
 
-
+  modalAjoutBtn.appendChild(spanAddPhoto);
 
   fileButton.addEventListener("click", function () {
     fileInput.click();
@@ -504,21 +442,25 @@ spansModal2.appendChild(btnModal2Back);
 
   addImgModaleDiv.appendChild(fileInput);
 
+  /**
+  const btnSubmitValider = document.querySelector('.btnSubmitValider');
+  btnSubmitValider.classList.add('btnSubmitValider','line2');
+ */
+
+
+
   const formAddWorkModal = document.createElement("div");
   formAddWorkModal.appendChild(divForm);
 
 
+// permet d'avoir une color green sur valider lorsque les champs son remplis
   document.querySelector(".modal-content").appendChild(formAddWorkModal);
-
+  document.querySelector(".spanModal").appendChild(spanAddPhoto);
 
   const monFormulaire = document.getElementById('photoForm');
   const btnSubmit = document.querySelector('.btnSubmitValider');
 
   monFormulaire.addEventListener('input', function () {
-
-    console.log("Validation du formulaire en cours");
-
-
     if (monFormulaire.checkValidity()) {
       btnSubmit.classList.add('formulaire-rempli');
     } else {
@@ -531,10 +473,29 @@ spansModal2.appendChild(btnModal2Back);
 
 
 
-
+// Déclaration de divPreview à l'extérieur de la fonction
 
 //S0phie
 
+function updateImageDisplay() {
+  while (divPreview.firstChild) {
+    divPreview.removeChild(divPreview.firstChild);
+  }
+  const curFiles = fileInput.files;
+
+  for (const file of curFiles) {
+    addImgModaleDiv.innerHTML = "";
+    const image = document.createElement("img");
+    image.src = window.URL.createObjectURL(file);
+    addImgModaleDiv.appendChild(divPreview);
+    image.className = "addImgModale";
+
+    divPreview.appendChild(image);
+  }
+
+  // Afficher la div de prévisualisation
+
+}
 
 const photoForm = document.getElementById("#photoForm");
 if (photoForm) {
@@ -637,21 +598,11 @@ btn.onclick = function () {
 
 span.onclick = function () {
   modal.style.display = "none";
-  fetchForModal();
 };
 
-
-
-btnModal2Close.onclick = function () {
+/**spanModalBack.onclick = function () {
   modal.style.display = "none";
-  fetchForPhoto();
-};
-
-
-btnModal2Back.onclick = function () {
-  modal.style.display = "none";
-  fetchForModal();
-};
+}; */
 
 
 

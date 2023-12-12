@@ -1,0 +1,8 @@
+Fixer le CSS de base qui a été modifier
+Fixer la modal quand on fais retour
+Ajouter un <hr/> pour la ligne
+Revoir tout le CSS par rapport a la maquette
+Préparer la soutenance
+
+
+
