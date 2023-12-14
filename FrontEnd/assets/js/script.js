@@ -308,11 +308,13 @@ spansModal2.appendChild(btnModal2Back);
 
     if (token) {
       let formData = new FormData();
-      formData.append("image", form.elements.image.value);
+      formData.append("image", form.elements.photo.files[0]);
+
       formData.append("title", form.elements.title.value);
       
-      console.log(formData.append("image", form.elements.image.value));
-      console.log(formData.append("title", form.elements.title.value));
+      // console.log(formData.append("image", form.elements.photo.files[0]));
+    
+      // console.log(formData.append("title", form.elements.title.value));
 
       const categoryId = mapCategoryValue(form.elements.categories.value);
 
@@ -326,7 +328,6 @@ spansModal2.appendChild(btnModal2Back);
       console.log(formData.getAll("image"));
       console.log(formData.getAll("title"));
       console.log(formData.getAll("category"));
-      console.log(formData);
 
       fetch("http://localhost:5678/api/works", {
         method: "POST",
@@ -355,9 +356,7 @@ spansModal2.appendChild(btnModal2Back);
     console.log("Formulaire soumis");
     console.log(e);
 
-    const formData = new FormData(form);
-    console.log(formData);
-    formData.append(addImgModaleDiv)
+
   });
 
 // Ajoute le contenu du formulaire
