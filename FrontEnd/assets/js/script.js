@@ -284,9 +284,6 @@ spansModal2.appendChild(btnModal2Back);
 
   // Fonction de mappage pour les catégories
 
-
-
-  
   function mapCategoryValue(category) {
     const categoryMap = {
       objets: 1,
@@ -311,9 +308,10 @@ spansModal2.appendChild(btnModal2Back);
 
     if (token) {
       let formData = new FormData();
-      formData.append("image", form.elements.photo.files[0]);
+      formData.append("image", form.elements.image.value);
       formData.append("title", form.elements.title.value);
-      console.log(formData.append("image", form.elements.photo.files[0]));
+      
+      console.log(formData.append("image", form.elements.image.value));
       console.log(formData.append("title", form.elements.title.value));
 
       const categoryId = mapCategoryValue(form.elements.categories.value);
@@ -362,70 +360,72 @@ spansModal2.appendChild(btnModal2Back);
     formData.append(addImgModaleDiv)
   });
 
-  // Ajoute le contenu du formulaire
-  const addImgModaleDiv = document.createElement("div");
-  addImgModaleDiv.className = "addImgModale";
+// Ajoute le contenu du formulaire
+const addImgModaleDiv = document.createElement("div");
+addImgModaleDiv.className = "addImgModale";
 
-  const label = document.createElement("label");
-  label.for = "photo";
-  label.className = "custom-file-input";
-  label.innerHTML = '<i class="fa-solid fa-image"></i>';
+const label = document.createElement("label");
+label.for = "photo";
+label.className = "customFileInput";
+label.innerHTML = '<i class="fa-solid fa-image"></i>';
+label.id = 'customFile';
 
-  // Bouton ajouter une photo
-  const fileButton = document.createElement("button");
-  fileButton.type = "button";
-  fileButton.textContent = "Ajouter une photo";
-  fileButton.className = "btnAddClass"
+// Bouton ajouter une photo
+const fileButton = document.createElement("button");
+fileButton.type = "button";
+fileButton.textContent = "Ajouter une photo";
+fileButton.className = "btnAddClass";
 
-  // Elément de fichier
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.name = "photo";
-  fileInput.id = "photo";
-  fileInput.accept = "image/*";
-  fileInput.style.display = "none";
+// Elément de fichier
+const fileInput = document.createElement("input");
+fileInput.type = "file";
+fileInput.name = "photo";
+fileInput.id = "photo";
+fileInput.accept = "image/*";
+fileInput.style.display = "none";
 
-  const pModaleDiv = document.createElement("p");
-  pModaleDiv.textContent = "jpg, png : 4mo max";
-  pModaleDiv.className = "pModaleDiv";
+const pModaleDiv = document.createElement("p");
+pModaleDiv.textContent = "jpg, png : 4mo max";
+pModaleDiv.className = "pModaleDiv";
 
+addImgModaleDiv.appendChild(label);
+addImgModaleDiv.appendChild(fileButton);
+addImgModaleDiv.appendChild(pModaleDiv);
 
-  addImgModaleDiv.appendChild(label);
-  addImgModaleDiv.appendChild(fileButton);
-  addImgModaleDiv.appendChild(pModaleDiv);
+// Elément de preview
+const divPreview = document.createElement("div");
+divPreview.className = "addElementPreview";
+divPreview.style.opacity = 0;
 
-  // elément preview
+fileInput.addEventListener("change", updateImageDisplay);
 
-  const divPreview = document.createElement("div");
-  divPreview.className = "addElementPreview";
-  divPreview.style.opacity = 0;
+addImgModaleDiv.appendChild(divPreview);
 
-  fileInput.addEventListener("change", updateImageDisplay);
-
-  addImgModaleDiv.appendChild(divPreview);
-
-  function updateImageDisplay() {
-    while (divPreview.firstChild) {
-      divPreview.removeChild(divPreview.firstChild);
-    }
-    const curFiles = fileInput.files;
-
-    for (const file of curFiles) {
-      addImgModaleDiv.innerHTML = "";
-      const image = document.createElement("img");
-      image.src = window.URL.createObjectURL(file);
-      addImgModaleDiv.appendChild(divPreview);
-      image.className = "addImgModale";
-
-      divPreview.appendChild(image);
-      console.log(image);
-
-
-
-    }
-    divPreview.style.opacity = 1;
-
+function updateImageDisplay() {
+  while (divPreview.firstChild) {
+    divPreview.removeChild(divPreview.firstChild);
   }
+
+  const curFiles = fileInput.files;
+
+  for (const file of curFiles) {
+    fileButton.style.opacity = 0;
+    pModaleDiv.style.opacity = 0;
+    customFile.style.opacity = 0;
+    
+    const image = document.createElement("img");
+    image.src = window.URL.createObjectURL(file);
+    console.log(image.src);
+    image.className = "addImgModale";
+
+    divPreview.appendChild(image);
+    console.log(image);
+  }
+  divPreview.style.opacity = 1;
+  
+
+}
+
 
 
 

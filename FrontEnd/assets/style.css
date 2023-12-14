@@ -282,6 +282,7 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+	cursor: pointer;
 }
 
 li:hover,
@@ -424,7 +425,7 @@ a:hover {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
-
+	cursor: pointer;
 }
 
 .line2 {
@@ -544,7 +545,7 @@ footer nav ul {
 	border-radius: 20px;
 	border: 1px solid grey;
 	background: #dfd9d9;
-
+	cursor: pointer;
 }
 
 
@@ -574,6 +575,7 @@ footer nav ul {
 #myBtn {
 	width: 100px;
 	height: 25px;
+	cursor: pointer;
 }
 
 /* Modal Content */
@@ -597,6 +599,7 @@ footer nav ul {
 .addElementPreview img {
 	width: 150px;
 	height: 169px;
+	margin-bottom: 90px;
 }
 
 /* The Close Button */
@@ -695,7 +698,8 @@ footer nav ul {
 .inputTitleCat {
 	margin-top: 5px;
 	margin: 3px;
-	width: 420px;
+	width: auto;
+	max-width: 420px;
 	height: 51px;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);	border: none;
@@ -717,6 +721,7 @@ footer nav ul {
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 0px;
+	cursor: pointer;
 }
 
 
@@ -748,6 +753,7 @@ margin-bottom: 0;
 	background: #1d6154;
 	border: none;
 	border-radius: 20px;
+	cursor: pointer;
 }
 
 .pModaleDiv {
