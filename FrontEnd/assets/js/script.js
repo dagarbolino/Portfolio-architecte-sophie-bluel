@@ -2,19 +2,15 @@ const url = "http://localhost:5678/api/";
 const URL_WORKS = url + "works";
 const URL_LOGIN = url + "users/login";
 
-//#region constante
-const galleryyElement = document.getElementById("gallery");
+//#region Constantes
+const galleryElement = document.getElementById("gallery");
 const modalAjoutElement = document.getElementById("btnModalAjout");
 const btnModalAjout = document.querySelector(".btnModalAjout");
 
 const boutonAll = document.querySelector(".btn[data-category='all']");
 const boutonObjets = document.querySelector(".btn[data-category='objets']");
-const boutonAppart = document.querySelector(
-  ".btn[data-category='appartements']"
-);
-const boutonHotelResto = document.querySelector(
-  ".btn[data-category='hotels-restos']"
-);
+const boutonAppart = document.querySelector(".btn[data-category='appartements']");
+const boutonHotelResto = document.querySelector(".btn[data-category='hotels-restos']");
 
 const modeEdit = document.querySelector(".modeEdit");
 const loginbtn = document.querySelector(".login");
@@ -29,16 +25,12 @@ const galleryModale = document.getElementById("galleryModale");
 
 const myBtnModal = document.getElementById("myBtn");
 
-const modal = document.getElementById("myModal");
 const btn = document.getElementById("myBtn");
 const btnAjoutPhoto = document.querySelector(".btnModalAjout");
 
 const span = document.querySelector(".spanModal");
 
 const btnModal2CloseClick = document.querySelector(".spansModal2");
-
-
-
 //#endregion
 
 class Works {
@@ -47,7 +39,7 @@ class Works {
   }
 }
 
-// Function Logout
+// Fonction de déconnexion
 const logout = () => {
   sessionStorage.removeItem("token");
   window.location.href = "index.html";
@@ -70,17 +62,14 @@ const checkToken = () => {
 };
 checkToken();
 
-//gallery page d'acceuil
+// Page d'accueil de la galerie
 function fetchAndDisplay(categoryId) {
   const token = sessionStorage.getItem("token");
   console.log(token);
 
-
   fetch(URL_WORKS)
     .then((data) => data.json())
     .then((jsonListWorks) => {
-      //console.log(jsonListWorks);
-
       let filteredWorks;
       if (categoryId === "all") {
         filteredWorks = jsonListWorks;
@@ -120,7 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 boutonAll.addEventListener("click", async () => {
-  document.getElementById("gallery").innerHTML = ""; // Efface le contenu
+  document.getElementById("gallery").innerHTML = "";
   fetchAndDisplay("all");
 });
 
@@ -139,19 +128,86 @@ boutonHotelResto.addEventListener("click", async () => {
   fetchAndDisplay(3);
 });
 
-//galleryModale
-function fetchForModal() {
-  const token = sessionStorage.getItem("token");
-  if (!token) {
-    console.error(
-      "Token manquant. L'utilisateur n'est peut-être pas connecté."
+
+
+
+
+
+
+
+const btnOpenModal = document.getElementById("openModal");
+let modalStep = 0;
+const categoryMap = { objets: 1, appartements: 2, hotelsrestos: 3 };
+
+btnOpenModal.addEventListener("click", () => {
+  updateModal();
+});
+
+  // Création d'un élément HTML
+function createElement(tag, className, textContent) {
+  const element = document.createElement(tag);
+  if (className) element.classList.add(className);
+  if (textContent) element.textContent = textContent;
+  return element;
+}
+
+
+// Affichage de la modale
+function updateModal() {
+  const existingModal = document.querySelector(".afficheModal");
+  if (existingModal) existingModal.remove();
+
+  const modal = createElement("div", "afficheModal");
+  const modalContent = createElement("div", "modal-content");
+
+  const modalBtn = createElement(
+    "button",
+    modalStep === 0 ? "next-btn" : "previous-btn",
+    modalStep === 0 ? "Next" : "Previous"
+  );
+
+  modalBtn.addEventListener("click", () => {
+    modalStep += modalStep === 0 ? 1 : -1;
+    updateModal();
+  });
+
+  const modalClose = createElement("button", "close-btn", null);
+  const iconClose = createElement("i", "fas");
+  iconClose.classList.add("fa-close");
+
+
+  modalClose.appendChild(iconClose);
+
+  modalClose.addEventListener("click", () => {
+    modal.remove();
+    modalStep = 0;
+  });
+
+  switch (modalStep) {
+    case 0:
+
+    modalContent.appendChild(
+      createElement("h3", "modal-title", "Galerie photo")
     );
-    return;
-  }
-  document.getElementById("galleryModale").innerHTML = "";
+    modalContent.appendChild(createElement("div", "figureModale"));
+
+    modalContent.querySelector(".figureModale").appendChild(createElement("img", "imageElement", null)).src = "./assets/images/appartement-paris-v.png";
+    const imageElement = modalContent.querySelector(".imageElement");
+
+    imageElement.style.width = "60px";
+    imageElement.style.height = "80px";
+
+    modalContent.querySelector(".figureModale").appendChild(createElement("span", "iconSpan", null));
+
+    const trashIcon = createElement("i", "fas");
+    trashIcon.classList.add("fa-trash");
+
+    modalContent.querySelector(".iconSpan").appendChild(trashIcon);
+      
 
 
-  fetch(URL_WORKS)
+   
+    fetch(URL_WORKS)
     .then((data) => data.json())
     .then((jsonListWorks) => {
       for (let jsonWorks of jsonListWorks) {
@@ -159,8 +215,6 @@ function fetchForModal() {
 
         let figureModals = document.createElement("div");
         figureModals.className = "figureModale";
-
-
 
         let imageElement = document.createElement("img");
         imageElement.src = works.imageUrl;
@@ -188,371 +242,146 @@ function fetchForModal() {
             );
           }
         });
-
-        iconSpan.appendChild(trashIcon);
-        figureModals.appendChild(iconSpan);
-        figureModals.appendChild(imageElement);
-
-
-
-        document.querySelector(".spanModal").innerHTML = "";
-        const spanModal = document.querySelector(".spanModal").innerHTML = `&times`;
-        spanModal.className = "spanModal";
-
-
-        document.getElementById("galleryModale").appendChild(figureModals);
-
-      }
-    })
-    .catch((error) => {
-      console.error("Erreur lors de la récupération des articles : " + error);
-    });
-}
-
-
-// Créer le bouton de fermeture
-const btnModal2Close = document.createElement("button");
-btnModal2Close.className = "btnModal2Close";
-btnModal2Close.innerHTML = `&times`;
-
-// Créer le bouton de retour
-const btnModal2Back = document.createElement("button");
-btnModal2Back.className = "btnModal2Back";
-btnModal2Back.innerHTML = `&#129060`;
-
-
-
-function fetchForPhoto() {
-  const token = sessionStorage.getItem("token");
-  if (!token) {
-    console.error(
-      "Token manquant. L'utilisateur n'est peut-être pas connecté."
-    );
-    return;
-  }
-
-  //#region constante pour fetchForPhoto
-// modal2-content
-
-
-
-// Sélectionner l'élément .spans
-const spansModal2 = document.querySelector(".spans");
-
-// Effacer le contenu actuel de .spans
-spansModal2.innerHTML = "";
-
-// Ajouter la classe .spansModal2
-spansModal2.className = "spansModal2";
-
-
-
-
-
-
-
-// Ajouter les boutons à .spansModal2
-spansModal2.appendChild(btnModal2Close);
-spansModal2.appendChild(btnModal2Back);
-
- 
-
-
-  const modalH2 = document.querySelector(".modal-content h2");
-  modalH2.innerHTML = `
-  <h2>Ajout photo</h2>
-  `;
-
-
-
-
-  document.getElementById("galleryModale").innerHTML = ``;
-
-  const modalLine = document.querySelector(".modal-content .line");
-  modalLine.className = "hide";
-
-  const modalAjoutBtn = document.querySelector(".deleteBtnAjoutModal");
-  modalAjoutBtn.innerHTML = ``;
-
-
-
-
-
-  //#endregion
-
-  //#region  constante formulaire pour add works
-
-  // Fonction de mappage pour les catégories
-
-  function mapCategoryValue(category) {
-    const categoryMap = {
-      objets: 1,
-      appartements: 2,
-      hotelsrestos: 3,
-    };
-    return categoryMap[category.toLowerCase()] || null;
-  }
-
-
-  //S0phie
-  const form = document.createElement("form");
-  form.action = "#";
-  form.method = "post";
-  form.enctype = "multipart/form-data";
-  form.id = "photoForm";
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    console.log("Formulaire soumis");
-    const token = sessionStorage.getItem("token");
-
-    if (token) {
-      let formData = new FormData();
-      formData.append("image", form.elements.photo.files[0]);
-
-      formData.append("title", form.elements.title.value);
       
-      // console.log(formData.append("image", form.elements.photo.files[0]));
-    
-      // console.log(formData.append("title", form.elements.title.value));
+      /**
+       * Fetches data for the modal.
+       */
 
-      const categoryId = mapCategoryValue(form.elements.categories.value);
+/**    
+ *   function fetchForModal() {
+        const token = sessionStorage.getItem("token");
+        if (!token) {
+          console.error(
+            "Token manquant. L'utilisateur n'est peut-être pas connecté."
+          );
+          return;
+        }
 
-      if (categoryId !== null) {
-        formData.append("category", categoryId);
-      } else {
-        console.error("Catégorie non valide");
-        return;
+        modalContent.appendChild(
+          createElement("h3", "modal-title", "Galerie photo")
+        );
+        modalContent.appendChild(createElement("div", "figureModale"));
+
+        modalContent.appendChild(createElement("div", "galleryModale"));
+
+        document.querySelector(".galleryModale").innerHTML = "";
+      
+        fetch(URL_WORKS)
+          .then((data) => data.json())
+          .then((jsonListWorks) => {
+            for (let jsonWorks of jsonListWorks) {
+              let works = new Works(jsonWorks);
+      
+              let figureModals = document.createElement("div");
+              figureModals.className = "figureModale";
+      
+              let imageElement = document.createElement("img");
+              imageElement.src = works.imageUrl;
+      
+              let iconSpan = document.createElement("span");
+              iconSpan.className = "iconSpan";
+      
+              let trashIcon = document.createElement("i");
+              trashIcon.className = "fa-solid fa-trash-can";
+      
+              // Evénements pour le clic sur l'icône de la corbeille
+              trashIcon.addEventListener("click", async () => {
+                try {
+                  const response = await deleteWork(works.id);
+                  console.log(response);
+      
+                  if (response === "Work deleted") {
+                    figureModals.remove();
+                    console.log("Figure supprimée avec succès");
+                  }
+                } catch (error) {
+                  console.error(
+                    "Erreur lors de la suppression de l'œuvre : ",
+                    error.message
+                  );
+                }
+              });
+              iconSpan.appendChild(trashIcon);
+              figureModals.appendChild(iconSpan);
+              figureModals.appendChild(imageElement);
+      
+              document.querySelector(".spanModal").innerHTML = "";
+              const spanModal = document.querySelector(".spanModal").innerHTML = `&times`;
+              spanModal.className = "spanModal";
+      
+              document.getElementById("galleryModale").appendChild(figureModals);
+            }
+          })
+          .catch((error) => {
+            console.error("Erreur lors de la récupération des articles : " + error);
+          });
       }
 
-      console.log(formData.getAll("image"));
-      console.log(formData.getAll("title"));
-      console.log(formData.getAll("category"));
+ */
 
-      fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
 
-        body: formData,
-      })
-        .then((response) => {
-          console.log(response);
-          if (response.ok) {
-            console.log("ok");
-            window.location.href = "index.html";
-          } else {
-            console.log("pas ok");
-          }
-        })
-        .catch((error) => {
-          console.error(
-            "Erreur lors de la récupération des articles : " + error
-          );
-          console.log(response.json());
-        });
+/**
+      let figureModals = document.createElement("div");
+      figureModals.className = "figureModale";
+
+      let imageElement = document.createElement("img");
+      imageElement.src = works.imageUrl;
+
+      let iconSpan = document.createElement("span");
+      iconSpan.className = "iconSpan";
+
+      let trashIcon = document.createElement("i");
+      trashIcon.className = "fa-solid fa-trash-can"; */
+
+
+
+
+
+
+
+
+
     }
-    console.log("Formulaire soumis");
-    console.log(e);
+
+    });
 
 
-  });
+      break;
 
-// Ajoute le contenu du formulaire
-const addImgModaleDiv = document.createElement("div");
-addImgModaleDiv.className = "addImgModale";
+    case 1:
+      modalContent.appendChild(
+        createElement("input", "modal-input", null)
+      ).type = "file";
+      modalContent.appendChild(
+        createElement("input", "modal-input", null)
+      ).placeholder = "Title";
+      const modalSelectCategory = createElement("select", "modal-input");
+      for (const category in categoryMap) {
+        const option = createElement("option");
+        option.value = categoryMap[category];
+        option.textContent = category;
+        modalSelectCategory.appendChild(option);
+      }
+      modalContent.appendChild(modalSelectCategory);
+      break;
 
-const label = document.createElement("label");
-label.for = "photo";
-label.className = "customFileInput";
-label.innerHTML = '<i class="fa-solid fa-image"></i>';
-label.id = 'customFile';
-
-// Bouton ajouter une photo
-const fileButton = document.createElement("button");
-fileButton.type = "button";
-fileButton.textContent = "Ajouter une photo";
-fileButton.className = "btnAddClass";
-
-// Elément de fichier
-const fileInput = document.createElement("input");
-fileInput.type = "file";
-fileInput.name = "photo";
-fileInput.id = "photo";
-fileInput.accept = "image/*";
-fileInput.style.display = "none";
-
-const pModaleDiv = document.createElement("p");
-pModaleDiv.textContent = "jpg, png : 4mo max";
-pModaleDiv.className = "pModaleDiv";
-
-addImgModaleDiv.appendChild(label);
-addImgModaleDiv.appendChild(fileButton);
-addImgModaleDiv.appendChild(pModaleDiv);
-
-// Elément de preview
-const divPreview = document.createElement("div");
-divPreview.className = "addElementPreview";
-divPreview.style.opacity = 0;
-
-fileInput.addEventListener("change", updateImageDisplay);
-
-addImgModaleDiv.appendChild(divPreview);
-
-function updateImageDisplay() {
-  while (divPreview.firstChild) {
-    divPreview.removeChild(divPreview.firstChild);
+    default:
+      break;
   }
 
-  const curFiles = fileInput.files;
+  modalContent.appendChild(modalBtn);
+  modalContent.appendChild(modalClose);
 
-  for (const file of curFiles) {
-    fileButton.style.opacity = 0;
-    pModaleDiv.style.opacity = 0;
-    customFile.style.opacity = 0;
-    
-    const image = document.createElement("img");
-    image.src = window.URL.createObjectURL(file);
-    console.log(image.src);
-    image.className = "addImgModale";
-
-    divPreview.appendChild(image);
-    console.log(image);
-  }
-  divPreview.style.opacity = 1;
-  
-
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
 }
 
 
 
 
 
-  const labelTitle = document.createElement("label");
-  labelTitle.for = "title";
-  labelTitle.textContent = "Titre";
-  labelTitle.className = "classTitleCat"
-
-  const inputTitle = document.createElement("input");
-  inputTitle.type = "text";
-  inputTitle.name = "title";
-  inputTitle.id = "title";
-  inputTitle.className = "inputTitleCat"
-
-  const labelCategories = document.createElement("label");
-  labelCategories.for = "categories";
-  labelCategories.textContent = "Catégories";
-  labelCategories.className = "classTitleCat"
-
-  const selectCategories = document.createElement("select");
-  selectCategories.name = "categories";
-  selectCategories.id = "categories";
-  selectCategories.className = "inputTitleCat"
-
-  const optionDefault = document.createElement("option");
-  selectCategories.appendChild(optionDefault);
-
-  const optionObjets = document.createElement("option");
-  optionObjets.value = "objets";
-  optionObjets.textContent = "Objets";
-  selectCategories.appendChild(optionObjets);
-
-  const optionAppartements = document.createElement("option");
-  optionAppartements.value = "appartements";
-  optionAppartements.textContent = "Appartements";
-  selectCategories.appendChild(optionAppartements);
-
-  const optionHotelsRestos = document.createElement("option");
-  optionHotelsRestos.value = "hotelsrestos";
-  optionHotelsRestos.textContent = "Hôtels & restaurants";
-  selectCategories.appendChild(optionHotelsRestos);
-
-  //S0phie
-
-  const elementHr = document.createElement("div");
-  elementHr.className = "elementHr"
-  elementHr.innerHTML = `<hr/>`
-
-  const submitBtn = document.createElement("input");
-  submitBtn.type = "submit";
-  submitBtn.value = "Valider";
-  submitBtn.className = "btnSubmitValider"
-
-  form.appendChild(addImgModaleDiv);
-  form.appendChild(labelTitle);
-  form.appendChild(inputTitle);
-  form.appendChild(labelCategories);
-  form.appendChild(selectCategories);
-  form.appendChild(elementHr)
-  form.appendChild(submitBtn);
-
-  const divForm = document.createElement("div");
-  divForm.className = "divFormAdd";
-  divForm.appendChild(form);
 
 
-
-  modalAjoutBtn.appendChild(divForm);
-
-
-
-  fileButton.addEventListener("click", function () {
-    fileInput.click();
-  });
-
-  addImgModaleDiv.appendChild(fileInput);
-
-  const formAddWorkModal = document.createElement("div");
-  formAddWorkModal.appendChild(divForm);
-
-
-  document.querySelector(".modal-content").appendChild(formAddWorkModal);
-
-
-  const monFormulaire = document.getElementById('photoForm');
-  const btnSubmit = document.querySelector('.btnSubmitValider');
-
-  monFormulaire.addEventListener('input', function () {
-
-    console.log("Validation du formulaire en cours");
-
-
-    if (monFormulaire.checkValidity()) {
-      btnSubmit.classList.add('formulaire-rempli');
-    } else {
-      btnSubmit.classList.remove('formulaire-rempli');
-    }
-  });
-
-  //#endregion
-}
-
-
-
-
-
-//S0phie
-
-
-const photoForm = document.getElementById("#photoForm");
-if (photoForm) {
-  photoForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    try {
-      const response = await addWork();
-      console.log(response);
-
-      console.log(formData);
-    } catch (error) {
-      console.error("Erreur lors de l'ajout de l'œuvre : ", error.message);
-    }
-  });
-} else {
-  console.error("L'élément n'a pas été trouvé ou en attente d'excution...");
-}
-
-// Delete work
 const deleteWork = async (id) => {
   const token = sessionStorage.getItem("token");
   console.log(token);
@@ -623,41 +452,22 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-btnAjoutPhoto.onclick = function () {
-  modal.style.display = "block";
-  fetchForPhoto();
-};
-
-btn.onclick = function () {
-  modal.style.display = "block";
-  fetchForModal();
-};
 
 
-span.onclick = function () {
-  modal.style.display = "none";
-  fetchForModal();
+
+/**
+const btnFetchForDelete = document.getElementById("openModal")
+
+btnFetchForDelete.onclick = function () {
+ // modal.style.display = "block";
+ fetchForModal();
 };
 
 
-
-btnModal2Close.onclick = function () {
-  modal.style.display = "none";
-  fetchForPhoto();
-};
-
-
-btnModal2Back.onclick = function () {
-  modal.style.display = "none";
-  fetchForModal();
-};
+ */
 
 
 
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
+
 
 //  S0phie

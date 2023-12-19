@@ -32,12 +32,10 @@ const myBtnModal = document.getElementById("myBtn");
 const modal = document.getElementById("myModal");
 const btn = document.getElementById("myBtn");
 const btnAjoutPhoto = document.querySelector(".btnModalAjout");
-const spanClose = document.getElementsByClassName("close")[0];
 
 const span = document.querySelector(".spanModal");
 
-const modalContenttt = document.querySelector(".modal-content")
-
+const btnModal2CloseClick = document.querySelector(".spansModal2");
 
 //#endregion
 
@@ -46,14 +44,12 @@ class Works {
     jsonWorks && Object.assign(this, jsonWorks);
   }
 }
-
 // Function Logout
 const logout = () => {
   sessionStorage.removeItem("token");
   window.location.href = "index.html";
   loginbtn.innerHTML = "login";
 };
-
 const checkToken = () => {
   if (sessionStorage.getItem("token") != null) {
     loginbtn.innerHTML = "Logout";
@@ -69,7 +65,6 @@ const checkToken = () => {
   }
 };
 checkToken();
-
 //gallery page d'acceuil
 function fetchAndDisplay(categoryId) {
   const token = sessionStorage.getItem("token");
@@ -138,7 +133,6 @@ boutonHotelResto.addEventListener("click", async () => {
   document.getElementById("gallery").innerHTML = "";
   fetchAndDisplay(3);
 });
-
 //galleryModale
 function fetchForModal() {
   const token = sessionStorage.getItem("token");
@@ -150,7 +144,6 @@ function fetchForModal() {
   }
   document.getElementById("galleryModale").innerHTML = "";
 
-
   fetch(URL_WORKS)
     .then((data) => data.json())
     .then((jsonListWorks) => {
@@ -159,8 +152,6 @@ function fetchForModal() {
 
         let figureModals = document.createElement("div");
         figureModals.className = "figureModale";
-
-
 
         let imageElement = document.createElement("img");
         imageElement.src = works.imageUrl;
@@ -188,26 +179,30 @@ function fetchForModal() {
             );
           }
         });
-
         iconSpan.appendChild(trashIcon);
         figureModals.appendChild(iconSpan);
         figureModals.appendChild(imageElement);
- 
-
 
         document.querySelector(".spanModal").innerHTML = "";
         const spanModal = document.querySelector(".spanModal").innerHTML = `&times`;
         spanModal.className = "spanModal";
 
-
         document.getElementById("galleryModale").appendChild(figureModals);
-
       }
     })
     .catch((error) => {
       console.error("Erreur lors de la récupération des articles : " + error);
     });
 }
+/**Créer le bouton de fermeture
+const btnModal2Close = document.createElement("button");
+btnModal2Close.className = "btnModal2Close";
+btnModal2Close.innerHTML = `&times`;
+
+// Créer le bouton de retour
+const btnModal2Back = document.createElement("button");
+btnModal2Back.className = "btnModal2Back";
+btnModal2Back.innerHTML = `&#129060`; */
 
 function fetchForPhoto() {
   const token = sessionStorage.getItem("token");
@@ -217,26 +212,20 @@ function fetchForPhoto() {
     );
     return;
   }
-  //  je construit ma page .....
   //#region constante pour fetchForPhoto
+  // modal2-content
 
+  const spansModal2 = document.querySelector(".spans");
+  spansModal2.innerHTML = "";
+  spansModal2.className = "spansModal2";
+
+  spansModal2.appendChild(btnModal2Close);
+  spansModal2.appendChild(btnModal2Back);
 
   const modalH2 = document.querySelector(".modal-content h2");
   modalH2.innerHTML = `
   <h2>Ajout photo</h2>
   `;
-
-  const divSpanp = document.createElement("span")
-  divSpanp.className = ("spanModalBack")
-
-  const spanModale2 = document.querySelector(".spans")
-  spanModale2.appendChild(divSpanp)
-
-  document.querySelector(".spanModalBack").innerHTML = "";
-  document.querySelector(".spanModalBack").innerHTML = `&#129060`;
-
-  //spanModalBack.style.opacity = 1;
-
 
   document.getElementById("galleryModale").innerHTML = ``;
 
@@ -245,15 +234,12 @@ function fetchForPhoto() {
 
   const modalAjoutBtn = document.querySelector(".deleteBtnAjoutModal");
   modalAjoutBtn.innerHTML = ``;
-
-  const spanAddPhoto = document.createElement("span");
-
-
   //#endregion
 
   //#region  constante formulaire pour add works
 
   // Fonction de mappage pour les catégories
+
   function mapCategoryValue(category) {
     const categoryMap = {
       objets: 1,
@@ -262,6 +248,7 @@ function fetchForPhoto() {
     };
     return categoryMap[category.toLowerCase()] || null;
   }
+
   //S0phie
   const form = document.createElement("form");
   form.action = "#";
@@ -287,11 +274,6 @@ function fetchForPhoto() {
         console.error("Catégorie non valide");
         return;
       }
-
-      console.log(formData.getAll("image"));
-      console.log(formData.getAll("title"));
-      console.log(formData.getAll("category"));
-      console.log(formData);
 
       fetch("http://localhost:5678/api/works", {
         method: "POST",
@@ -319,10 +301,6 @@ function fetchForPhoto() {
     }
     console.log("Formulaire soumis");
     console.log(e);
-
-    const formData = new FormData(form);
-    console.log(formData);
-    formData.append(addImgModaleDiv)
   });
 
   // Ajoute le contenu du formulaire
@@ -331,16 +309,15 @@ function fetchForPhoto() {
 
   const label = document.createElement("label");
   label.for = "photo";
-  label.className = "custom-file-input";
+  label.className = "customFileInput";
   label.innerHTML = '<i class="fa-solid fa-image"></i>';
+  label.id = 'customFile';
 
-  // Bouton ajouter une photo
   const fileButton = document.createElement("button");
   fileButton.type = "button";
   fileButton.textContent = "Ajouter une photo";
-  fileButton.className = "btnAddClass"
+  fileButton.className = "btnAddClass";
 
-  // Elément de fichier
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.name = "photo";
@@ -352,13 +329,10 @@ function fetchForPhoto() {
   pModaleDiv.textContent = "jpg, png : 4mo max";
   pModaleDiv.className = "pModaleDiv";
 
-
   addImgModaleDiv.appendChild(label);
   addImgModaleDiv.appendChild(fileButton);
   addImgModaleDiv.appendChild(pModaleDiv);
 
-  // elément preview
-  //console.log(fileInput);
   const divPreview = document.createElement("div");
   divPreview.className = "addElementPreview";
   divPreview.style.opacity = 0;
@@ -367,7 +341,27 @@ function fetchForPhoto() {
 
   addImgModaleDiv.appendChild(divPreview);
 
+  function updateImageDisplay() {
+    while (divPreview.firstChild) {
+      divPreview.removeChild(divPreview.firstChild);
+    }
+    const curFiles = fileInput.files;
 
+    for (const file of curFiles) {
+      fileButton.style.opacity = 0;
+      pModaleDiv.style.opacity = 0;
+      customFile.style.opacity = 0;
+
+      const image = document.createElement("img");
+      image.src = window.URL.createObjectURL(file);
+      console.log(image.src);
+      image.className = "addImgModale";
+
+      divPreview.appendChild(image);
+      console.log(image);
+    }
+    divPreview.style.opacity = 1;
+  }
 
   const labelTitle = document.createElement("label");
   labelTitle.for = "title";
@@ -409,7 +403,6 @@ function fetchForPhoto() {
   selectCategories.appendChild(optionHotelsRestos);
 
   //S0phie
-
   const elementHr = document.createElement("div");
   elementHr.className = "elementHr"
   elementHr.innerHTML = `<hr/>`
@@ -431,72 +424,34 @@ function fetchForPhoto() {
   divForm.className = "divFormAdd";
   divForm.appendChild(form);
 
-  modalAjoutBtn.appendChild(spanAddPhoto);
   modalAjoutBtn.appendChild(divForm);
-
-  modalAjoutBtn.appendChild(spanAddPhoto);
 
   fileButton.addEventListener("click", function () {
     fileInput.click();
   });
-
   addImgModaleDiv.appendChild(fileInput);
-
-  /**
-  const btnSubmitValider = document.querySelector('.btnSubmitValider');
-  btnSubmitValider.classList.add('btnSubmitValider','line2');
- */
-
-
 
   const formAddWorkModal = document.createElement("div");
   formAddWorkModal.appendChild(divForm);
 
-
-// permet d'avoir une color green sur valider lorsque les champs son remplis
   document.querySelector(".modal-content").appendChild(formAddWorkModal);
-  document.querySelector(".spanModal").appendChild(spanAddPhoto);
 
   const monFormulaire = document.getElementById('photoForm');
   const btnSubmit = document.querySelector('.btnSubmitValider');
 
   monFormulaire.addEventListener('input', function () {
+    console.log("Validation du formulaire en cours");
+
     if (monFormulaire.checkValidity()) {
       btnSubmit.classList.add('formulaire-rempli');
     } else {
       btnSubmit.classList.remove('formulaire-rempli');
     }
   });
-
   //#endregion
 }
 
-
-
-// Déclaration de divPreview à l'extérieur de la fonction
-
 //S0phie
-
-function updateImageDisplay() {
-  while (divPreview.firstChild) {
-    divPreview.removeChild(divPreview.firstChild);
-  }
-  const curFiles = fileInput.files;
-
-  for (const file of curFiles) {
-    addImgModaleDiv.innerHTML = "";
-    const image = document.createElement("img");
-    image.src = window.URL.createObjectURL(file);
-    addImgModaleDiv.appendChild(divPreview);
-    image.className = "addImgModale";
-
-    divPreview.appendChild(image);
-  }
-
-  // Afficher la div de prévisualisation
-
-}
-
 const photoForm = document.getElementById("#photoForm");
 if (photoForm) {
   photoForm.addEventListener("submit", async function (e) {
@@ -595,21 +550,24 @@ btn.onclick = function () {
   fetchForModal();
 };
 
-
 span.onclick = function () {
   modal.style.display = "none";
+  fetchForModal();
 };
 
-/**spanModalBack.onclick = function () {
+btnModal2Close.onclick = function () {
   modal.style.display = "none";
-}; */
+  fetchForPhoto();
+};
 
-
+btnModal2Back.onclick = function () {
+  modal.style.display = "none";
+  fetchForModal();
+};
 
 window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
 };
-
 //  S0phie
