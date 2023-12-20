@@ -781,7 +781,7 @@ margin-bottom: 0;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	z-index: 999;
-	width: 50%;
+	width: 60%;
 	height: calc(90% - 20px);
 	background: #f2f2f2;
 	display: flex;
@@ -792,19 +792,19 @@ margin-bottom: 0;
 	padding: 20px;
   }
   .modal-content {
-	width: 50%;
-	background-color: #1d6154;
+	width: 60%;
+	min-height: 80%;
   }
 
 
   .modal-title {
-	font-size: 1.5rem;
-	margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
+	font-size: 2rem;
+	margin-bottom: 40px;
   }
   
-  .modal-text {
-	margin-bottom: 20px;
-  }
+
   
   .modal-input {
 	width: 100%;

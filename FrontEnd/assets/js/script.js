@@ -143,7 +143,7 @@ btnOpenModal.addEventListener("click", () => {
   updateModal();
 });
 
-  // Création d'un élément HTML
+// Création d'un élément HTML
 function createElement(tag, className, textContent) {
   const element = document.createElement(tag);
   if (className) element.classList.add(className);
@@ -154,6 +154,16 @@ function createElement(tag, className, textContent) {
 
 // Affichage de la modale
 function updateModal() {
+
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    console.error(
+      "Token manquant. L'utilisateur n'est peut-être pas connecté."
+    );
+    return;
+  }
+
+
   const existingModal = document.querySelector(".afficheModal");
   if (existingModal) existingModal.remove();
 
@@ -186,46 +196,35 @@ function updateModal() {
   switch (modalStep) {
     case 0:
 
-    modalContent.appendChild(
-      createElement("h3", "modal-title", "Galerie photo")
-    );
-    modalContent.appendChild(createElement("div", "figureModale"));
+      modalContent.appendChild(
+        createElement("h3", "modal-title", "Galerie photo")
+      );
 
-    modalContent.querySelector(".figureModale").appendChild(createElement("img", "imageElement", null)).src = "./assets/images/appartement-paris-v.png";
-    const imageElement = modalContent.querySelector(".imageElement");
-
-    imageElement.style.width = "60px";
-    imageElement.style.height = "80px";
-
-    modalContent.querySelector(".figureModale").appendChild(createElement("span", "iconSpan", null));
-
-    const trashIcon = createElement("i", "fas");
-    trashIcon.classList.add("fa-trash");
-
-    modalContent.querySelector(".iconSpan").appendChild(trashIcon);
-      
+      const galleryModale = createElement("div", "galleryModale");
+      galleryModale.id = "galleryModale";
+      modalContent.appendChild(galleryModale);
 
 
-   
-    fetch(URL_WORKS)
-    .then((data) => data.json())
-    .then((jsonListWorks) => {
-      for (let jsonWorks of jsonListWorks) {
-        let works = new Works(jsonWorks);
+      fetch(URL_WORKS)
+        .then((data) => data.json())
+        .then((jsonListWorks) => {
+          for (let jsonWorks of jsonListWorks) {
+            let works = new Works(jsonWorks);
 
-        let figureModals = document.createElement("div");
-        figureModals.className = "figureModale";
+            let figureModals = document.createElement("div");
+            figureModals.className = "figureModale";
 
-        let imageElement = document.createElement("img");
-        imageElement.src = works.imageUrl;
+            let imageElement = document.createElement("img");
+            imageElement.src = works.imageUrl;
+            imageElement.alt = works.title;
 
-        let iconSpan = document.createElement("span");
-        iconSpan.className = "iconSpan";
+            let iconSpan = document.createElement("span");
+            iconSpan.className = "iconSpan";
+    
+            let trashIcon = document.createElement("i");
+            trashIcon.className = "fa-solid fa-trash-can";
 
-        let trashIcon = document.createElement("i");
-        trashIcon.className = "fa-solid fa-trash-can";
-
-        // Evénements pour le clic sur l'icône de la corbeille
+                    // Evénements pour le clic sur l'icône de la corbeille
         trashIcon.addEventListener("click", async () => {
           try {
             const response = await deleteWork(works.id);
@@ -242,109 +241,19 @@ function updateModal() {
             );
           }
         });
-      
-      /**
-       * Fetches data for the modal.
-       */
 
-/**    
- *   function fetchForModal() {
-        const token = sessionStorage.getItem("token");
-        if (!token) {
-          console.error(
-            "Token manquant. L'utilisateur n'est peut-être pas connecté."
-          );
-          return;
-        }
+            figureModals.appendChild(imageElement);
 
-        modalContent.appendChild(
-          createElement("h3", "modal-title", "Galerie photo")
-        );
-        modalContent.appendChild(createElement("div", "figureModale"));
+            iconSpan.appendChild(trashIcon);
+            figureModals.appendChild(iconSpan);
+            figureModals.appendChild(imageElement);
 
-        modalContent.appendChild(createElement("div", "galleryModale"));
-
-        document.querySelector(".galleryModale").innerHTML = "";
-      
-        fetch(URL_WORKS)
-          .then((data) => data.json())
-          .then((jsonListWorks) => {
-            for (let jsonWorks of jsonListWorks) {
-              let works = new Works(jsonWorks);
-      
-              let figureModals = document.createElement("div");
-              figureModals.className = "figureModale";
-      
-              let imageElement = document.createElement("img");
-              imageElement.src = works.imageUrl;
-      
-              let iconSpan = document.createElement("span");
-              iconSpan.className = "iconSpan";
-      
-              let trashIcon = document.createElement("i");
-              trashIcon.className = "fa-solid fa-trash-can";
-      
-              // Evénements pour le clic sur l'icône de la corbeille
-              trashIcon.addEventListener("click", async () => {
-                try {
-                  const response = await deleteWork(works.id);
-                  console.log(response);
-      
-                  if (response === "Work deleted") {
-                    figureModals.remove();
-                    console.log("Figure supprimée avec succès");
-                  }
-                } catch (error) {
-                  console.error(
-                    "Erreur lors de la suppression de l'œuvre : ",
-                    error.message
-                  );
-                }
-              });
-              iconSpan.appendChild(trashIcon);
-              figureModals.appendChild(iconSpan);
-              figureModals.appendChild(imageElement);
-      
-              document.querySelector(".spanModal").innerHTML = "";
-              const spanModal = document.querySelector(".spanModal").innerHTML = `&times`;
-              spanModal.className = "spanModal";
-      
-              document.getElementById("galleryModale").appendChild(figureModals);
-            }
-          })
-          .catch((error) => {
-            console.error("Erreur lors de la récupération des articles : " + error);
-          });
-      }
-
- */
-
-
-/**
-      let figureModals = document.createElement("div");
-      figureModals.className = "figureModale";
-
-      let imageElement = document.createElement("img");
-      imageElement.src = works.imageUrl;
-
-      let iconSpan = document.createElement("span");
-      iconSpan.className = "iconSpan";
-
-      let trashIcon = document.createElement("i");
-      trashIcon.className = "fa-solid fa-trash-can"; */
-
-
-
-
-
-
-
-
-
-    }
-
-    });
-
+            document.getElementById("galleryModale").appendChild(figureModals);
+          }
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des articles : " + error);
+        });
 
       break;
 
