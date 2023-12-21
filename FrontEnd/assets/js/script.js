@@ -135,7 +135,7 @@ boutonHotelResto.addEventListener("click", async () => {
 
 
 
-const btnOpenModal = document.getElementById("openModal");
+const btnOpenModal = document.getElementById("myBtn");
 let modalStep = 0;
 const categoryMap = { objets: 1, appartements: 2, hotelsrestos: 3 };
 
@@ -151,6 +151,15 @@ function createElement(tag, className, textContent) {
   return element;
 }
 
+// Récupération de la valeur de la catégorie
+function mapCategoryValue(category) {
+  const categoryMap = {
+    objets: 1,
+    appartements: 2,
+    hotelsrestos: 3,
+  };
+  return categoryMap[category.toLowerCase()] || null;
+}
 
 // Affichage de la modale
 function updateModal() {
@@ -169,6 +178,7 @@ function updateModal() {
 
   const modal = createElement("div", "afficheModal");
   const modalContent = createElement("div", "modal-content");
+
 
   const modalBtn = createElement(
     "button",
@@ -202,8 +212,19 @@ function updateModal() {
 
       const galleryModale = createElement("div", "galleryModale");
       galleryModale.id = "galleryModale";
-      modalContent.appendChild(galleryModale);
 
+      const btnModalAjout = createElement("button", "btnModalAjout", null);
+      btnModalAjout.id = "btnModalAjout";
+      btnModalAjout.textContent = "Ajouter une photo";
+
+      btnModalAjout.addEventListener("click", () => {
+        modalStep += modalStep === 0 ? 1 : -1;
+        updateModal();
+      });
+
+
+      modalContent.appendChild(galleryModale);
+      modalContent.appendChild(btnModalAjout);
 
       fetch(URL_WORKS)
         .then((data) => data.json())
@@ -220,27 +241,27 @@ function updateModal() {
 
             let iconSpan = document.createElement("span");
             iconSpan.className = "iconSpan";
-    
+
             let trashIcon = document.createElement("i");
             trashIcon.className = "fa-solid fa-trash-can";
 
-                    // Evénements pour le clic sur l'icône de la corbeille
-        trashIcon.addEventListener("click", async () => {
-          try {
-            const response = await deleteWork(works.id);
-            console.log(response);
+            // Evénements pour le clic sur l'icône de la corbeille
+            trashIcon.addEventListener("click", async () => {
+              try {
+                const response = await deleteWork(works.id);
+                console.log(response);
 
-            if (response === "Work deleted") {
-              figureModals.remove();
-              console.log("Figure supprimée avec succès");
-            }
-          } catch (error) {
-            console.error(
-              "Erreur lors de la suppression de l'œuvre : ",
-              error.message
-            );
-          }
-        });
+                if (response === "Work deleted") {
+                  figureModals.remove();
+                  console.log("Figure supprimée avec succès");
+                }
+              } catch (error) {
+                console.error(
+                  "Erreur lors de la suppression de l'œuvre : ",
+                  error.message
+                );
+              }
+            });
 
             figureModals.appendChild(imageElement);
 
@@ -258,12 +279,80 @@ function updateModal() {
       break;
 
     case 1:
+
+      // Ajout du titre de la modale
       modalContent.appendChild(
-        createElement("input", "modal-input", null)
-      ).type = "file";
-      modalContent.appendChild(
-        createElement("input", "modal-input", null)
-      ).placeholder = "Title";
+        createElement("h3", "modal-title", "Ajout photo")
+      );
+
+
+      const modalInputFile = document.createElement("div");
+      modalInputFile.className = "modalInputFile";
+      modalContent.appendChild(modalInputFile);
+
+      //Ajout d'une icone pour le champ de l'image
+      const iconInputFile = document.createElement("i");
+      iconInputFile.className = "far fa-image";
+      modalInputFile.appendChild(iconInputFile);
+
+
+
+
+      // Ajout du champ pour l'image
+      const fileButton = document.createElement("input");
+      fileButton.type = "file";
+      fileButton.className = "btnAddClass";
+      fileButton.id = "btnAddId";
+      fileButton.innerText = "+ Ajouter une photo";
+      modalInputFile.appendChild(fileButton);
+
+
+      // ajout d'un paragraphe pour le texte
+
+      const modalText = document.createElement("p");
+      modalText.className = "modalText";
+      modalText.innerText = "jpg, png : 4mo max";
+      modalInputFile.appendChild(modalText);
+
+
+
+
+
+
+
+
+
+
+
+      // Ajout du champ pour le titre
+      const modalTitreCat = document.createElement("div");
+      modalTitreCat.className = "modalTitreCat";
+      modalContent.appendChild(modalTitreCat);
+
+      // Ajout du titre pour le titre
+      const pTitre = document.createElement("p");
+      pTitre.className = "pTitre";
+      pTitre.innerText = "Titre";
+      modalTitreCat.appendChild(pTitre);
+
+      // Ajout du champ pour le titre
+      const inputTitre = document.createElement("input");
+      inputTitre.className = "modal-input";
+      inputTitre.placeholder = "Titre";
+      modalTitreCat.appendChild(inputTitre);
+
+      // Ajout du select pour la catégorie
+      const modalCat = document.createElement("div");
+      modalCat.className = "modalCat";
+      modalContent.appendChild(modalCat);
+
+      // Ajout du champ pour la catégorie
+      const pCat = document.createElement("p");
+      pCat.className = "pCat";
+      pCat.innerText = "Catégorie";
+      modalCat.appendChild(pCat);
+
+      // Ajout du champ pour la catégorie
       const modalSelectCategory = createElement("select", "modal-input");
       for (const category in categoryMap) {
         const option = createElement("option");
@@ -271,7 +360,114 @@ function updateModal() {
         option.textContent = category;
         modalSelectCategory.appendChild(option);
       }
-      modalContent.appendChild(modalSelectCategory);
+
+      // Ajout du select pour la catégorie
+      modalCat.appendChild(modalSelectCategory);
+
+      // Bouton d'envoi du formulaire
+      const elementSubmit = createElement("div", "elementSubmit");
+      modalContent.appendChild(elementSubmit);
+
+      // Bouton d'envoi du formulaire
+      const modalBtnSubmit = document.createElement("button");
+      modalBtnSubmit.className = "modalBtvValider";
+      modalBtnSubmit.innerText = "Valider";
+
+      modalBtnSubmit.addEventListener("click", async () => {
+        const imageInput = document.getElementById("btnAddId");
+        
+        const titleInput = document.querySelector(".modal-input");
+        const categoryInput = document.querySelector("select");
+
+
+
+        const image = imageInput.files[0];
+        console.log(image);
+
+        const title = titleInput.value;
+        console.log(title);
+
+        const category = categoryInput.value;
+        console.log(category);
+
+
+
+
+
+        let formData = new FormData;
+
+        formData.append("image", imageInput.files[0]);
+
+        formData.append("title", titleInput.value);
+        formData.append("category", category);
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const imageBinary = e.target.result;
+          // converti l'image en json
+          const imageJson = JSON.stringify(imageBinary);
+          // stocke l'image dans le local storage
+          localStorage.setItem("image", imageJson);
+
+          const newImgInModal = document.createElement("img");
+          newImgInModal.className = "newImgInModal";
+          
+          newImgInModal.src = imageBinary;
+      
+          const afficheNewImg = document.querySelector(".modalInputFile");
+          afficheNewImg.innerHTML = "";
+          afficheNewImg.className = "elementNewImgInModal";
+          modalInputFile.appendChild(newImgInModal);
+        };
+
+         reader.readAsDataURL(image);
+
+
+
+
+
+
+
+
+
+
+         
+
+        fetch(URL_WORKS, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+            body: formData,
+           
+          })
+
+           console.log(formData)
+
+          .then(function (response) {
+            console.log(response);
+            console.log(JSON.stringify(response));
+            console.log(JSON.stringify(response).status);
+           
+            if (response.ok) {
+              console.log("ok");
+              window.location.href = "index.html";
+            } else {
+              console.log("pas ok");
+            }
+          })
+         
+
+          .catch((error) => {
+            console.error("Erreur lors de la récupération des articles : " + error);
+            console.log(response.json());
+          });
+
+      console.log("Formulaire soumis");
+
+      });
+      elementSubmit.appendChild(modalBtnSubmit);
+
       break;
 
     default:
@@ -285,12 +481,7 @@ function updateModal() {
   document.body.appendChild(modal);
 }
 
-
-
-
-
-
-
+// Suppression d'une œuvre
 const deleteWork = async (id) => {
   const token = sessionStorage.getItem("token");
   console.log(token);

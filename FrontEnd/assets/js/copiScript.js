@@ -194,15 +194,7 @@ function fetchForModal() {
       console.error("Erreur lors de la récupération des articles : " + error);
     });
 }
-/**Créer le bouton de fermeture
-const btnModal2Close = document.createElement("button");
-btnModal2Close.className = "btnModal2Close";
-btnModal2Close.innerHTML = `&times`;
 
-// Créer le bouton de retour
-const btnModal2Back = document.createElement("button");
-btnModal2Back.className = "btnModal2Back";
-btnModal2Back.innerHTML = `&#129060`; */
 
 function fetchForPhoto() {
   const token = sessionStorage.getItem("token");
@@ -571,3 +563,71 @@ window.onclick = function (event) {
   }
 };
 //  S0phie
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const imageBinary = e.target.result;
+          // Afficher l'image dans la modale
+          const modalImage = document.createElement("img");
+          modalImage.src = imageBinary;
+          modalContent.appendChild(modalImage);
+        };
+        reader.readAsDataURL(image);
+
+        fetch(URL_WORKS, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        })
+          .then((response) => {
+            console.log(response.json());
+            if (response.ok) {
+              console.log("ok");
+              window.location.href = "index.html";
+            } else {
+              console.log("pas ok");
+            }
+          })
+          .catch((error) => {
+            console.error("Erreur lors de la récupération des articles : " + error);
+            console.log(response.json());
+          });
+
+          
+
+        console.log("Formulaire soumis");
+      })
+          .then((response) => {
+            console.log(response.json());
+            if (response.ok) {
+              console.log("ok");
+              window.location.href = "index.html";
+            } else {
+              console.log("pas ok");
+            }
+          })
+          .catch((error) => {
+            console.error("Erreur lors de la récupération des articles : " + error);
+            console.log(response.json());
+          });
+
+      console.log("Formulaire soumis");
+    
+
+      elementSubmit.appendChild(modalBtnSubmit);
+
+      break; */
