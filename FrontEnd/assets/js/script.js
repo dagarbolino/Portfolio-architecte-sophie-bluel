@@ -179,12 +179,13 @@ function updateModal() {
   const modal = createElement("div", "afficheModal");
   const modalContent = createElement("div", "modal-content");
 
-
+  // Bouton de navigation dans la modale
   const modalBtn = createElement(
     "button",
-    modalStep === 0 ? "next-btn" : "previous-btn",
-    modalStep === 0 ? "Next" : "Previous"
+    "previous-btn",
+    "Previous"
   );
+
 
   modalBtn.addEventListener("click", () => {
     modalStep += modalStep === 0 ? 1 : -1;
@@ -315,15 +316,6 @@ function updateModal() {
       modalInputFile.appendChild(modalText);
 
 
-
-
-
-
-
-
-
-
-
       // Ajout du champ pour le titre
       const modalTitreCat = document.createElement("div");
       modalTitreCat.className = "modalTitreCat";
@@ -413,13 +405,13 @@ function updateModal() {
           // stocke l'image dans le local storage
           localStorage.setItem("image", imageJson);
 
-     
+
           // Affichage de l'image dans la modale
           const newImgInModal = document.createElement("img");
           newImgInModal.className = "newImgInModal";
 
           newImgInModal.src = imageBinary;
-        
+
 
           const afficheNewImg = document.querySelector(".modalInputFile");
           afficheNewImg.innerHTML = "";
@@ -451,7 +443,7 @@ function updateModal() {
             if (json.status === 200) {
               return "Work added";
             }
-            else {window.location.href = "index.html";}
+            else { window.location.href = "index.html"; }
           })
           .catch((error) => {
             console.error("Erreur lors de l'ajout de l'image : " + error);
@@ -463,14 +455,20 @@ function updateModal() {
       break;
   }
 
-  modalContent.appendChild(modalBtn);
+// Ajoute le contenu du formulaire
+  if (modalStep === 1) {
+    modalContent.appendChild(modalBtn);
+  }
+
+
+
   modalContent.appendChild(modalClose);
 
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 }
 
- // Ajoute le contenu du formulaire
+// Ajoute le contenu du formulaire
 function addFormContent() {
   const form = document.createElement("form");
   form.id = "form";
@@ -496,8 +494,6 @@ function addFormContent() {
 
   return form;
 }
-
-
 
 // S0phie
 
