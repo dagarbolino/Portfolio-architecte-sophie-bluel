@@ -375,7 +375,7 @@ function updateModal() {
 
       modalBtnSubmit.addEventListener("click", async () => {
         const imageInput = document.getElementById("btnAddId");
-        
+
         const titleInput = document.querySelector(".modal-input");
         const categoryInput = document.querySelector("select");
 
@@ -397,11 +397,15 @@ function updateModal() {
         let formData = new FormData;
 
         formData.append("image", imageInput.files[0]);
+        console.log(imageInput.files[0]);
 
-        formData.append("title", titleInput.value);
+        formData.append("title", title);
+        console.log(title);
+
         formData.append("category", category);
 
         const reader = new FileReader();
+
         reader.onload = function (e) {
           const imageBinary = e.target.result;
           // converti l'image en json
@@ -409,68 +413,53 @@ function updateModal() {
           // stocke l'image dans le local storage
           localStorage.setItem("image", imageJson);
 
+     
+          // Affichage de l'image dans la modale
           const newImgInModal = document.createElement("img");
           newImgInModal.className = "newImgInModal";
-          
+
           newImgInModal.src = imageBinary;
-      
+        
+
           const afficheNewImg = document.querySelector(".modalInputFile");
           afficheNewImg.innerHTML = "";
           afficheNewImg.className = "elementNewImgInModal";
           modalInputFile.appendChild(newImgInModal);
         };
 
-         reader.readAsDataURL(image);
+        reader.readAsDataURL(image);
 
 
 
-
-
-
-
-
-
-
-         
 
         fetch(URL_WORKS, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
           },
-            body: formData,
-           
-          })
+          body: formData,
 
-           console.log(formData)
+        })
 
-          .then(function (response) {
-            console.log(response);
-            console.log(JSON.stringify(response));
-            console.log(JSON.stringify(response).status);
-           
-            if (response.ok) {
-              console.log("ok");
-              window.location.href = "index.html";
-            } else {
-              console.log("pas ok");
+          .then((response) => response.json())
+          .then((json) => {
+            console.log(json);
+            console.log("L'image a été ajoutée avec succès");
+            if (json.status === 401) {
+              throw new Error("Unauthorized");
             }
+            if (json.status === 200) {
+              return "Work added";
+            }
+            else {window.location.href = "index.html";}
           })
-         
-
           .catch((error) => {
-            console.error("Erreur lors de la récupération des articles : " + error);
-            console.log(response.json());
+            console.error("Erreur lors de l'ajout de l'image : " + error);
           });
-
-      console.log("Formulaire soumis");
-
       });
+
       elementSubmit.appendChild(modalBtnSubmit);
 
-      break;
-
-    default:
       break;
   }
 
@@ -480,6 +469,38 @@ function updateModal() {
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 }
+
+ // Ajoute le contenu du formulaire
+function addFormContent() {
+  const form = document.createElement("form");
+  form.id = "form";
+  form.method = "POST";
+  form.enctype = "multipart/form-data";
+
+  const input = document.createElement("input");
+  input.type = "file";
+  input.name = "image";
+  input.id = "image";
+
+  const label = document.createElement("label");
+  label.for = "image";
+  label.textContent = "Choisir une image";
+
+  const submit = document.createElement("input");
+  submit.type = "submit";
+  submit.value = "Envoyer";
+
+  form.appendChild(label);
+  form.appendChild(input);
+  form.appendChild(submit);
+
+  return form;
+}
+
+
+
+// S0phie
+
 
 // Suppression d'une œuvre
 const deleteWork = async (id) => {
@@ -555,16 +576,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-/**
-const btnFetchForDelete = document.getElementById("openModal")
-
-btnFetchForDelete.onclick = function () {
- // modal.style.display = "block";
- fetchForModal();
-};
-
-
- */
 
 
 
