@@ -129,7 +129,6 @@ boutonHotelResto.addEventListener("click", async () => {
 });
 
 
-// 
 const btnOpenModal = document.getElementById("myBtn");
 let modalStep = 0;
 const categoryMap = { objets: 1, appartements: 2, hotelsrestos: 3 };
@@ -328,7 +327,6 @@ function updateModal() {
       // Ajout du champ pour le titre
       const inputTitre = document.createElement("input");
       inputTitre.className = "modal-input";
-      inputTitre.placeholder = "Titre";
       modalTitreCat.appendChild(inputTitre);
 
       // Ajout du select pour la catégorie
@@ -541,3 +539,4 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+//S0phie 

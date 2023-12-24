@@ -538,14 +538,6 @@ footer nav ul {
 	opacity: 0.4;
 }
 
-.btnAddClass {
-	width: 173px;
-	height: 36px;
-	border-radius: 20px;
-	border: 1px solid grey;
-	background: #dfd9d9;
-	cursor: pointer;
-}
 
 
 
@@ -743,8 +735,8 @@ footer nav ul {
 }
 
 .btnModalAjout {
-	width: 200px;
-	height: 30px;
+	width: 237px;
+	height: 36px;
 	display: flex;
 	justify-content: center;
 	margin: auto;
@@ -752,7 +744,7 @@ footer nav ul {
 	color: white;
 	background: #1d6154;
 	border: none;
-	border-radius: 20px;
+	border-radius: 60px;
 	cursor: pointer;
 }
 
@@ -781,8 +773,9 @@ footer nav ul {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	z-index: 999;
-	width: 60%;
-	height: calc(90% - 20px);
+	width:500px;
+	height: auto;
+	/*height: calc(90% - 20px);*/
 	background: #f2f2f2;
 	display: flex;
 	justify-content: center;
@@ -794,8 +787,8 @@ footer nav ul {
 
 .modal-content {
 	width: 70%;
-	min-height: 60%;
-	background: #dfd9d9;
+	min-height: 500px;
+	background: #f2f2f2;
 }
 
 
@@ -811,8 +804,15 @@ footer nav ul {
 .modal-input {
 	width: 100%;
 	padding: 10px;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
+	margin-top: 8px;
 	box-sizing: border-box;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.19);
+	border: none;
+}
+
+.modal-input:focus {
+	outline: none;
 }
 
 .next-btn,
@@ -871,9 +871,9 @@ input[type="file"]::before {
 	align-items: center;
 	position: absolute;
 	width: 180px;
-	height: 40px;
+	height: 37px;
 	background: #e2e1db;
-	color: #007bff;
+	color: rgba(48, 102, 133, 1);
 	cursor: pointer;
 	font-size: 1.1em;
 }
@@ -887,23 +887,27 @@ input[type="file"]:hover::before {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-around;
+	justify-content: center;
 	width: 100%;
 	height: 180px;
-	border: 1px solid black;
+	border: 1px solid rgb(230, 218, 218);
 	background: rgba(232, 241, 246, 1);
 	border-radius: 5px;
 	margin-bottom: 20px;
+	gap: 10px;
 }
 
 .btnAddClass {
 	width: 173px;
 	height: 36px;
-	border-radius: 50px;
-
-	background: rgba(255, 255, 255, 1);
+	border-radius: 60px;
+	border: 1px solid grey;
+	background: #dfd9d9;
 	cursor: pointer;
+
 }
+
+
 
 .fa-image {
 	font-size: 65px;
@@ -915,22 +919,9 @@ input[type="file"]:hover::before {
 	opacity: 0.6;
 }
 
-.modal-input {
-	width: 100%;
-	padding: 10px;
-	margin-bottom: 15px;
-	box-sizing: border-box;
-}
 
-.modal-input::placeholder {
-	color: #aaa;
-}
 
-.modal-input {
-	width: 100%;
-	height: 50px;
-	font-size: 1.2em;
-}
+
 
 .elementSubmit {
 	display: flex;
@@ -941,13 +932,13 @@ input[type="file"]:hover::before {
 }
 
 .modalBtvValider {
-	width: 200px;
-	height: 40px;
+	width: 237px;
+	height: 36px;
 	border: none;
 	cursor: pointer;
 	background: #1d6154;
 	color: white;
-	border-radius: 20px;
+	border-radius: 60px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -974,7 +965,9 @@ input[type="file"]:hover::before {
 
 .modalPreviewImg {
 	display: none;
-	width: 100px;
-	object-fit: cover;
-	margin-bottom: 20px;
+	width: auto;
+	height: 180px;
+	margin-top: 0;
+	margin-bottom: 15px;
+	
 }
