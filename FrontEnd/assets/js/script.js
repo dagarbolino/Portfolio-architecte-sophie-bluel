@@ -129,12 +129,7 @@ boutonHotelResto.addEventListener("click", async () => {
 });
 
 
-
-
-
-
-
-
+// 
 const btnOpenModal = document.getElementById("myBtn");
 let modalStep = 0;
 const categoryMap = { objets: 1, appartements: 2, hotelsrestos: 3 };
@@ -154,6 +149,7 @@ function createElement(tag, className, textContent) {
 // Récupération de la valeur de la catégorie
 function mapCategoryValue(category) {
   const categoryMap = {
+
     objets: 1,
     appartements: 2,
     hotelsrestos: 3,
@@ -218,15 +214,18 @@ function updateModal() {
       btnModalAjout.id = "btnModalAjout";
       btnModalAjout.textContent = "Ajouter une photo";
 
+      // Evénements pour le clic sur le bouton d'ajout
       btnModalAjout.addEventListener("click", () => {
         modalStep += modalStep === 0 ? 1 : -1;
+
         updateModal();
       });
 
-
+      // Ajout de la modale
       modalContent.appendChild(galleryModale);
       modalContent.appendChild(btnModalAjout);
 
+      // Récupération des œuvres
       fetch(URL_WORKS)
         .then((data) => data.json())
         .then((jsonListWorks) => {
@@ -279,6 +278,7 @@ function updateModal() {
 
       break;
 
+    // Ajout d'une photo modal 2
     case 1:
 
       // Ajout du titre de la modale
@@ -286,7 +286,7 @@ function updateModal() {
         createElement("h3", "modal-title", "Ajout photo")
       );
 
-
+      // Ajout du champ pour l'image
       const modalInputFile = document.createElement("div");
       modalInputFile.className = "modalInputFile";
       modalContent.appendChild(modalInputFile);
@@ -294,9 +294,8 @@ function updateModal() {
       //Ajout d'une icone pour le champ de l'image
       const iconInputFile = document.createElement("i");
       iconInputFile.className = "far fa-image";
+      iconInputFile.id = "iconInputFile";
       modalInputFile.appendChild(iconInputFile);
-
-
 
 
       // Ajout du champ pour l'image
@@ -309,7 +308,6 @@ function updateModal() {
 
 
       // ajout d'un paragraphe pour le texte
-
       const modalText = document.createElement("p");
       modalText.className = "modalText";
       modalText.innerText = "jpg, png : 4mo max";
@@ -353,6 +351,7 @@ function updateModal() {
         modalSelectCategory.appendChild(option);
       }
 
+
       // Ajout du select pour la catégorie
       modalCat.appendChild(modalSelectCategory);
 
@@ -365,13 +364,39 @@ function updateModal() {
       modalBtnSubmit.className = "modalBtvValider";
       modalBtnSubmit.innerText = "Valider";
 
+      // Ajout de la modale
+      const modalPreview = createElement("div");
+      modalPreview.className = "modalPreview";
+      modalContent.appendChild(modalPreview);
+
+      // Ajout de l'image de prévisualisation
+      const modalPreviewImg = document.createElement("img");
+      modalPreviewImg.className = "modalPreviewImg";
+      modalPreviewImg.style.display.display = "none";
+      modalInputFile.appendChild(modalPreviewImg);
+
+
+      // Ajout de l'événement de prévisualisation
+      fileButton.addEventListener("change", () => {
+        const imageInput = document.getElementById("btnAddId");
+        const image = imageInput.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onloadend = () => {
+          modalPreviewImg.src = reader.result;
+          iconInputFile.style.display = "none";
+          modalText.style.display = "none";
+          btnAddId.style.opacity = "0";
+          modalPreviewImg.style.display = "block";
+        };
+      });
+
+
       modalBtnSubmit.addEventListener("click", async () => {
         const imageInput = document.getElementById("btnAddId");
 
         const titleInput = document.querySelector(".modal-input");
         const categoryInput = document.querySelector("select");
-
-
 
         const image = imageInput.files[0];
         console.log(image);
@@ -379,50 +404,27 @@ function updateModal() {
         const title = titleInput.value;
         console.log(title);
 
+        // Prévisualisation de l'image
         const category = categoryInput.value;
         console.log(category);
 
 
-
-
-
         let formData = new FormData;
 
+        // Ajout de l'image
         formData.append("image", imageInput.files[0]);
         console.log(imageInput.files[0]);
 
+        // Ajout du titre
         formData.append("title", title);
         console.log(title);
 
+        // Ajout de la catégorie
         formData.append("category", category);
-
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-          const imageBinary = e.target.result;
-          // converti l'image en json
-          const imageJson = JSON.stringify(imageBinary);
-          // stocke l'image dans le local storage
-          localStorage.setItem("image", imageJson);
+        console.log(category);
 
 
-          // Affichage de l'image dans la modale
-          const newImgInModal = document.createElement("img");
-          newImgInModal.className = "newImgInModal";
-
-          newImgInModal.src = imageBinary;
-
-
-          const afficheNewImg = document.querySelector(".modalInputFile");
-          afficheNewImg.innerHTML = "";
-          afficheNewImg.className = "elementNewImgInModal";
-          modalInputFile.appendChild(newImgInModal);
-        };
-
-        reader.readAsDataURL(image);
-
-
-
+        // Envoi du formulaire
 
         fetch(URL_WORKS, {
           method: "POST",
@@ -450,52 +452,22 @@ function updateModal() {
           });
       });
 
+      // Ajout du bouton de validation
       elementSubmit.appendChild(modalBtnSubmit);
 
       break;
   }
 
-// Ajoute le contenu du formulaire
+  // Ajoute le contenu du formulaire
   if (modalStep === 1) {
     modalContent.appendChild(modalBtn);
   }
-
-
 
   modalContent.appendChild(modalClose);
 
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 }
-
-// Ajoute le contenu du formulaire
-function addFormContent() {
-  const form = document.createElement("form");
-  form.id = "form";
-  form.method = "POST";
-  form.enctype = "multipart/form-data";
-
-  const input = document.createElement("input");
-  input.type = "file";
-  input.name = "image";
-  input.id = "image";
-
-  const label = document.createElement("label");
-  label.for = "image";
-  label.textContent = "Choisir une image";
-
-  const submit = document.createElement("input");
-  submit.type = "submit";
-  submit.value = "Envoyer";
-
-  form.appendChild(label);
-  form.appendChild(input);
-  form.appendChild(submit);
-
-  return form;
-}
-
-// S0phie
 
 
 // Suppression d'une œuvre
@@ -555,7 +527,7 @@ for (let i = 0; i < figures.length; i++) {
     }
   });
 }
-//S0phie
+
 document.addEventListener("DOMContentLoaded", function () {
   const token = sessionStorage.getItem("token");
 
@@ -569,12 +541,3 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
-
-
-
-
-
-
-
-//  S0phie

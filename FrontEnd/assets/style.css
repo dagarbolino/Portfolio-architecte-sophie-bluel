@@ -971,3 +971,10 @@ input[type="file"]:hover::before {
 	justify-content: center;
 	align-items: center;
 }
+
+.modalPreviewImg {
+	display: none;
+	width: 100px;
+	object-fit: cover;
+	margin-bottom: 20px;
+}
