@@ -421,6 +421,8 @@ function fetchForPhoto() {
   fileButton.addEventListener("click", function () {
     fileInput.click();
   });
+
+  
   addImgModaleDiv.appendChild(fileInput);
 
   const formAddWorkModal = document.createElement("div");
@@ -442,6 +444,26 @@ function fetchForPhoto() {
   });
   //#endregion
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //S0phie
 const photoForm = document.getElementById("#photoForm");
@@ -565,69 +587,3 @@ window.onclick = function (event) {
 //  S0phie
 
 
-
-
-
-
-
-
-
-
-
-
-/**
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const imageBinary = e.target.result;
-          // Afficher l'image dans la modale
-          const modalImage = document.createElement("img");
-          modalImage.src = imageBinary;
-          modalContent.appendChild(modalImage);
-        };
-        reader.readAsDataURL(image);
-
-        fetch(URL_WORKS, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        })
-          .then((response) => {
-            console.log(response.json());
-            if (response.ok) {
-              console.log("ok");
-              window.location.href = "index.html";
-            } else {
-              console.log("pas ok");
-            }
-          })
-          .catch((error) => {
-            console.error("Erreur lors de la récupération des articles : " + error);
-            console.log(response.json());
-          });
-
-          
-
-        console.log("Formulaire soumis");
-      })
-          .then((response) => {
-            console.log(response.json());
-            if (response.ok) {
-              console.log("ok");
-              window.location.href = "index.html";
-            } else {
-              console.log("pas ok");
-            }
-          })
-          .catch((error) => {
-            console.error("Erreur lors de la récupération des articles : " + error);
-            console.log(response.json());
-          });
-
-      console.log("Formulaire soumis");
-    
-
-      elementSubmit.appendChild(modalBtnSubmit);
-
-      break; */

@@ -19,7 +19,6 @@ const modeEditElement = document.getElementById("modeEdit");
 const elementBtnModify = document.getElementById("elementBtnModify");
 
 const elementButtons = document.getElementById("elementButtons");
-const elementmodalContainer = document.getElementById("modalContainer");
 
 const galleryModale = document.getElementById("galleryModale");
 
@@ -131,8 +130,9 @@ boutonHotelResto.addEventListener("click", async () => {
 
 const btnOpenModal = document.getElementById("myBtn");
 let modalStep = 0;
-const categoryMap = { objets: 1, appartements: 2, hotelsrestos: 3 };
+const categoryMap = { "": 0, "Objets": 1, "Appartements": 2, "Hôtels & Restaurants": 3 };
 
+// Ouverture de la modale
 btnOpenModal.addEventListener("click", () => {
   updateModal();
 });
@@ -145,16 +145,6 @@ function createElement(tag, className, textContent) {
   return element;
 }
 
-// Récupération de la valeur de la catégorie
-function mapCategoryValue(category) {
-  const categoryMap = {
-
-    objets: 1,
-    appartements: 2,
-    hotelsrestos: 3,
-  };
-  return categoryMap[category.toLowerCase()] || null;
-}
 
 // Affichage de la modale
 function updateModal() {
@@ -172,14 +162,44 @@ function updateModal() {
   if (existingModal) existingModal.remove();
 
   const modal = createElement("div", "afficheModal");
+  modal.id = "afficheModalId";
   const modalContent = createElement("div", "modal-content");
 
-  // Bouton de navigation dans la modale
+  const myBtnModalOpacity = document.getElementById("myBtn");
+  const main = document.getElementById("main");
+
+// opacity 0.4 sauf modal au clic sur le bouton modifier
+
+const modalClose2 = document.querySelector(".close-btn");
+
+  if (modalStep === 0 || modalStep === 1) {
+    myBtnModalOpacity.style.opacity = "0.4";
+    main.style.opacity = "0.4";
+  } else { if (modalClose2 === "click") 
+    myBtnModalOpacity.style.opacity = "1";
+    main.style.opacity = "1";
+  }
+
+
+
+
+
+
+
+
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
   const modalBtn = createElement(
     "button",
     "previous-btn",
-    "Previous"
   );
+
+  const iconArrowLeft = createElement("img", "iconArrowLeft", null);
+  iconArrowLeft.src = "assets/icons/arrowLeft.png";
+  iconArrowLeft.alt = "Flèche gauche";
+
+  modalBtn.appendChild(iconArrowLeft);
 
 
   modalBtn.addEventListener("click", () => {
@@ -193,7 +213,6 @@ function updateModal() {
 
 
   modalClose.appendChild(iconClose);
-
   modalClose.addEventListener("click", () => {
     modal.remove();
     modalStep = 0;
@@ -209,6 +228,9 @@ function updateModal() {
       const galleryModale = createElement("div", "galleryModale");
       galleryModale.id = "galleryModale";
 
+      const elementHr = createElement("hr", "elementHr", null); //ligne de séparation
+
+
       const btnModalAjout = createElement("button", "btnModalAjout", null);
       btnModalAjout.id = "btnModalAjout";
       btnModalAjout.textContent = "Ajouter une photo";
@@ -222,6 +244,7 @@ function updateModal() {
 
       // Ajout de la modale
       modalContent.appendChild(galleryModale);
+      modalContent.appendChild(elementHr);
       modalContent.appendChild(btnModalAjout);
 
       // Récupération des œuvres
@@ -344,23 +367,49 @@ function updateModal() {
       const modalSelectCategory = createElement("select", "modal-input");
       for (const category in categoryMap) {
         const option = createElement("option");
+        option.className = "optionCategory";
         option.value = categoryMap[category];
         option.textContent = category;
         modalSelectCategory.appendChild(option);
       }
 
+      // ajout écouteur d'evenement sur le formulaire
+      // si les champs sont remplis, le bouton de validation devient vert
+      modalSelectCategory.addEventListener("change", () => {
+        if (inputTitre.value && modalSelectCategory.value && modalPreviewImg.value) {
+          modalBtnSubmit.style.background = "#1d6154";
+        } else {
+          modalBtnSubmit.style.background = "#1d6154";
+        }
+      });
+
+
+      //S0phie
+
+
+
+
 
       // Ajout du select pour la catégorie
       modalCat.appendChild(modalSelectCategory);
+
+      //ligne de séparation
+      elementHrCase2a = createElement("hr", "elementHr2", null);
+      modalContent.appendChild(elementHrCase2a);
 
       // Bouton d'envoi du formulaire
       const elementSubmit = createElement("div", "elementSubmit");
       modalContent.appendChild(elementSubmit);
 
+
       // Bouton d'envoi du formulaire
       const modalBtnSubmit = document.createElement("button");
       modalBtnSubmit.className = "modalBtvValider";
       modalBtnSubmit.innerText = "Valider";
+
+
+
+
 
       // Ajout de la modale
       const modalPreview = createElement("div");
@@ -388,6 +437,7 @@ function updateModal() {
           modalPreviewImg.style.display = "block";
         };
       });
+
 
 
       modalBtnSubmit.addEventListener("click", async () => {
