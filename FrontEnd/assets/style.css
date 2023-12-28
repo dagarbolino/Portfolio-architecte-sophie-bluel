@@ -690,7 +690,7 @@ hr .elementHr {
 	outline: none;
 }
 
-.previous-btn,
+.back-btn,
 .close-btn {
 	color: black;
 	padding: 10px 15px;
@@ -698,6 +698,7 @@ hr .elementHr {
 	cursor: pointer;
 	font-size: 30px;
 	font-weight: 900;
+	
 }
 
 .close-btn {
@@ -706,9 +707,10 @@ hr .elementHr {
 	top: 0px;
 	right: 15px;
 	margin: 0;
+	
 }
 
-.previous-btn {
+.back-btn {
 	position: absolute;
 	top: 0px;
 	left: 15px;
@@ -824,3 +826,16 @@ input[type="file"]:hover::before {
 	border-radius: 5px;
 	margin-bottom: 30px;
 }
+
+.overlay {
+	position: fixed;
+	top: 35px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(144, 140, 140, 0.7);
+	transition: opacity 500ms;
+	visibility: hidden;
+	opacity: 0;
+}
+

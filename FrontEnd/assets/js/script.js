@@ -30,8 +30,17 @@ const btnAjoutPhoto = document.querySelector(".btnModalAjout");
 const span = document.querySelector(".spanModal");
 
 const btnModal2CloseClick = document.querySelector(".spansModal2");
+
+const btnOpenModal = document.getElementById("myBtn");
+let modalStep = 0;
+
+const categoryMap = { "": 0, "Objets": 1, "Appartements": 2, "Hôtels & Restaurants": 3 };
+
+
+
 //#endregion
 
+// class Works 
 class Works {
   constructor(jsonWorks) {
     jsonWorks && Object.assign(this, jsonWorks);
@@ -45,6 +54,7 @@ const logout = () => {
   loginbtn.innerHTML = "login";
 };
 
+// Fonction de vérification du token
 const checkToken = () => {
   if (sessionStorage.getItem("token") != null) {
     loginbtn.innerHTML = "Logout";
@@ -60,6 +70,14 @@ const checkToken = () => {
   }
 };
 checkToken();
+
+// Création d'un élément HTML
+function createElement(tag, className, textContent) {
+  const element = document.createElement(tag);
+  if (className) element.classList.add(className);
+  if (textContent) element.textContent = textContent;
+  return element;
+}
 
 // Page d'accueil de la galerie
 function fetchAndDisplay(categoryId) {
@@ -102,6 +120,8 @@ function fetchAndDisplay(categoryId) {
     });
 }
 
+
+
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("gallery").innerHTML = "";
   fetchAndDisplay("all");
@@ -128,21 +148,59 @@ boutonHotelResto.addEventListener("click", async () => {
 });
 
 
-const btnOpenModal = document.getElementById("myBtn");
-let modalStep = 0;
-const categoryMap = { "": 0, "Objets": 1, "Appartements": 2, "Hôtels & Restaurants": 3 };
-
-// Ouverture de la modale
+// Ouverture de la modale événement sur le bouton
 btnOpenModal.addEventListener("click", () => {
   updateModal();
+  applyOverlay();
 });
 
-// Création d'un élément HTML
-function createElement(tag, className, textContent) {
-  const element = document.createElement(tag);
-  if (className) element.classList.add(className);
-  if (textContent) element.textContent = textContent;
-  return element;
+
+// overlay for the modal and opacity
+const overlay = createElement("div", "overlay");
+overlay.id = "overlayId";
+document.body.appendChild(overlay);
+
+// fonction pour appliquer  overlay
+function applyOverlay() {
+  const overlay = document.getElementById("overlayId");
+  overlay.style.opacity = "1";
+
+  const elementMainForMdale = document.getElementById("main");
+  elementMainForMdale.style.opacity = "0.5";
+  elementMainForMdale.style.transition = "all 0.5s ease-in-out";
+
+  const elementHeaderNav = document.querySelector(".navHeader");
+  elementHeaderNav.style.opacity = "0.5";
+  elementHeaderNav.style.transition = "all 0.5s ease-in-out";
+
+  const elementH1 = document.querySelector("h1");
+  elementH1.style.opacity = "0.5";
+  elementH1.style.transition = "all 0.5s ease-in-out";
+
+  const modeEditForMdale = document.getElementById("modeEdit");
+  modeEditForMdale.style.opacity = "1";
+
+  const elementFooterForMdale = document.getElementById("footer");
+  elementFooterForMdale.style.opacity = "0.5";
+  elementFooterForMdale.style.transition = "all 0.5s ease-in-out";
+}
+
+// fonction pour supprimer  overlay
+function removeOverlay() {
+  const overlay = document.getElementById("overlayId");
+  overlay.style.display = "none";
+
+  const elementMainForMdale = document.getElementById("main");
+  elementMainForMdale.style.opacity = "1";
+
+  const elementHeaderNav = document.querySelector(".navHeader");
+  elementHeaderNav.style.opacity = "1";
+
+  const elementH1 = document.querySelector("h1");
+  elementH1.style.opacity = "1";
+
+  const elementFooterForMdale = document.getElementById("footer");
+  elementFooterForMdale.style.opacity = "1";
 }
 
 
@@ -157,7 +215,6 @@ function updateModal() {
     return;
   }
 
-
   const existingModal = document.querySelector(".afficheModal");
   if (existingModal) existingModal.remove();
 
@@ -165,34 +222,14 @@ function updateModal() {
   modal.id = "afficheModalId";
   const modalContent = createElement("div", "modal-content");
 
-  const myBtnModalOpacity = document.getElementById("myBtn");
-  const main = document.getElementById("main");
-
-// opacity 0.4 sauf modal au clic sur le bouton modifier
-
-const modalClose2 = document.querySelector(".close-btn");
-
-  if (modalStep === 0 || modalStep === 1) {
-    myBtnModalOpacity.style.opacity = "0.4";
-    main.style.opacity = "0.4";
-  } else { if (modalClose2 === "click") 
-    myBtnModalOpacity.style.opacity = "1";
-    main.style.opacity = "1";
-  }
-
-
-
-
-
-
-
+  //S0phie
 
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 
   const modalBtn = createElement(
     "button",
-    "previous-btn",
+    "back-btn",
   );
 
   const iconArrowLeft = createElement("img", "iconArrowLeft", null);
@@ -201,22 +238,32 @@ const modalClose2 = document.querySelector(".close-btn");
 
   modalBtn.appendChild(iconArrowLeft);
 
-
   modalBtn.addEventListener("click", () => {
     modalStep += modalStep === 0 ? 1 : -1;
     updateModal();
   });
 
+  // création du bouton de fermeture de la modale
   const modalClose = createElement("button", "close-btn", null);
   const iconClose = createElement("i", "fas");
   iconClose.classList.add("fa-close");
 
 
+
+
+  // événement sur le bouton de fermeture de la modale
   modalClose.appendChild(iconClose);
   modalClose.addEventListener("click", () => {
     modal.remove();
+    removeOverlay();
     modalStep = 0;
   });
+
+
+
+
+
+
 
   switch (modalStep) {
     case 0:
@@ -387,9 +434,6 @@ const modalClose2 = document.querySelector(".close-btn");
       //S0phie
 
 
-
-
-
       // Ajout du select pour la catégorie
       modalCat.appendChild(modalSelectCategory);
 
@@ -406,9 +450,6 @@ const modalClose2 = document.querySelector(".close-btn");
       const modalBtnSubmit = document.createElement("button");
       modalBtnSubmit.className = "modalBtvValider";
       modalBtnSubmit.innerText = "Valider";
-
-
-
 
 
       // Ajout de la modale
@@ -437,8 +478,6 @@ const modalClose2 = document.querySelector(".close-btn");
           modalPreviewImg.style.display = "block";
         };
       });
-
-
 
       modalBtnSubmit.addEventListener("click", async () => {
         const imageInput = document.getElementById("btnAddId");
@@ -517,7 +556,6 @@ const modalClose2 = document.querySelector(".close-btn");
   document.body.appendChild(modal);
 }
 
-
 // Suppression d'une œuvre
 const deleteWork = async (id) => {
   const token = sessionStorage.getItem("token");
@@ -549,7 +587,6 @@ const deleteWork = async (id) => {
 };
 
 let figures = document.getElementsByClassName("figureModale");
-
 for (let i = 0; i < figures.length; i++) {
   figures[i].addEventListener("click", async function () {
     console.log("Figure cliquée :", figures[i]);
@@ -576,6 +613,7 @@ for (let i = 0; i < figures.length; i++) {
   });
 }
 
+// évenement sur le DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function () {
   const token = sessionStorage.getItem("token");
 
