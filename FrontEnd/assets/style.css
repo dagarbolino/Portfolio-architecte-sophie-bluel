@@ -179,13 +179,23 @@ h1>span {
 		background: #fff;
 		border: none;
 		margin-top: 5px;
-
 	}
 
 	.fa-pen-to-square {
 		font-size: 10px;
 		margin-right: 1vh;
 	}
+}
+
+.myBtn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row-reverse;
+	
+	width: 100px;
+	height: 35px;
+	cursor: pointer;
 }
 
 h2 {
