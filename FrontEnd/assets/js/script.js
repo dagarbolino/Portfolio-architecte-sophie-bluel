@@ -14,39 +14,30 @@ const boutonHotelResto = document.querySelector(".btn[data-category='hotels-rest
 
 const modeEdit = document.querySelector(".modeEdit");
 const loginbtn = document.querySelector(".login");
-
 const modeEditElement = document.getElementById("modeEdit");
-const elementBtnModify = document.getElementById("elementBtnModify");
-
 const elementButtons = document.getElementById("elementButtons");
-
-const galleryModale = document.getElementById("galleryModale");
-
 const myBtnModal = document.getElementById("myBtn");
-
 const btn = document.getElementById("myBtn");
-const btnAjoutPhoto = document.querySelector(".btnModalAjout");
-
-const span = document.querySelector(".spanModal");
-
-const btnModal2CloseClick = document.querySelector(".spansModal2");
-
 const btnOpenModal = document.getElementById("myBtn");
-let modalStep = 0;
-
 const categoryMap = { "": 0, "Objets": 1, "Appartements": 2, "Hôtels & Restaurants": 3 };
-
-
-
+let modalStep = 0;
 //#endregion
 
+//#region Classes
 // class Works 
 class Works {
   constructor(jsonWorks) {
     jsonWorks && Object.assign(this, jsonWorks);
   }
 }
+//#endregion
 
+// overlay for the modal and opacity
+const overlay = createElement("div", "overlay");
+overlay.id = "overlayId";
+document.body.appendChild(overlay);
+
+//#region Fonctions
 // Fonction de déconnexion
 const logout = () => {
   sessionStorage.removeItem("token");
@@ -120,46 +111,6 @@ function fetchAndDisplay(categoryId) {
     });
 }
 
-
-
-document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("gallery").innerHTML = "";
-  fetchAndDisplay("all");
-});
-
-boutonAll.addEventListener("click", async () => {
-  document.getElementById("gallery").innerHTML = "";
-  fetchAndDisplay("all");
-});
-
-boutonObjets.addEventListener("click", async () => {
-  document.getElementById("gallery").innerHTML = "";
-  fetchAndDisplay(1);
-});
-
-boutonAppart.addEventListener("click", async () => {
-  document.getElementById("gallery").innerHTML = "";
-  fetchAndDisplay(2);
-});
-
-boutonHotelResto.addEventListener("click", async () => {
-  document.getElementById("gallery").innerHTML = "";
-  fetchAndDisplay(3);
-});
-
-
-// Ouverture de la modale événement sur le bouton
-btnOpenModal.addEventListener("click", () => {
-  updateModal();
-  applyOverlay();
-});
-
-
-// overlay for the modal and opacity
-const overlay = createElement("div", "overlay");
-overlay.id = "overlayId";
-document.body.appendChild(overlay);
-
 // fonction pour appliquer  overlay
 function applyOverlay() {
   const overlay = document.getElementById("overlayId");
@@ -202,7 +153,6 @@ function removeOverlay() {
   const elementFooterForMdale = document.getElementById("footer");
   elementFooterForMdale.style.opacity = "1";
 }
-
 
 // Affichage de la modale
 function updateModal() {
@@ -556,6 +506,8 @@ function updateModal() {
   document.body.appendChild(modal);
 }
 
+//#endregion
+
 // Suppression d'une œuvre
 const deleteWork = async (id) => {
   const token = sessionStorage.getItem("token");
@@ -613,6 +565,38 @@ for (let i = 0; i < figures.length; i++) {
   });
 }
 
+//#region Evénements
+document.addEventListener("DOMContentLoaded", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay("all");
+});
+
+boutonAll.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay("all");
+});
+
+boutonObjets.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay(1);
+});
+
+boutonAppart.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay(2);
+});
+
+boutonHotelResto.addEventListener("click", async () => {
+  document.getElementById("gallery").innerHTML = "";
+  fetchAndDisplay(3);
+});
+
+// Ouverture de la modale événement sur le bouton
+btnOpenModal.addEventListener("click", () => {
+  updateModal();
+  applyOverlay();
+});
+
 // évenement sur le DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function () {
   const token = sessionStorage.getItem("token");
@@ -626,5 +610,7 @@ document.addEventListener("DOMContentLoaded", function () {
     myBtnModal.remove();
   }
 });
+
+//#endregion
 
 //S0phie 
