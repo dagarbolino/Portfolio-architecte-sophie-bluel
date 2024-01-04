@@ -154,7 +154,7 @@ function removeOverlay() {
   elementFooterForMdale.style.opacity = "1";
 }
 
-// Affichage de la modale
+// Affichage des modale
 function updateModal() {
 
   const token = sessionStorage.getItem("token");
@@ -167,6 +167,8 @@ function updateModal() {
 
   const existingModal = document.querySelector(".afficheModal");
   if (existingModal) existingModal.remove();
+  /**Permet de vérifier si un élément existe avant de le supprimer,
+   *  afin d'éviter des erreurs si l'élément n'est pas présent dans le document. */
 
   const modal = createElement("div", "afficheModal");
   modal.id = "afficheModalId";
@@ -212,7 +214,7 @@ function updateModal() {
 
 
 
-
+//S0phie
 
 
   switch (modalStep) {
@@ -599,7 +601,7 @@ btnOpenModal.addEventListener("click", () => {
 
 // évenement sur le DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function () {
-  const token = sessionStorage.getItem("token");
+  const token = sessionStorage.getItem("token");// stock le token dans une variable
 
   if (token) {
     console.log("L'utilisateur est connecté !");
