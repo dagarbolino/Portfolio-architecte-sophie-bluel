@@ -19,6 +19,7 @@ const elementButtons = document.getElementById("elementButtons");
 const myBtnModal = document.getElementById("myBtn");
 const btn = document.getElementById("myBtn");
 const btnOpenModal = document.getElementById("myBtn");
+
 const categoryMap = { "": 0, "Objets": 1, "Appartements": 2, "Hôtels & Restaurants": 3 };
 let modalStep = 0;
 //#endregion
@@ -28,6 +29,7 @@ let modalStep = 0;
 class Works {
   constructor(jsonWorks) {
     jsonWorks && Object.assign(this, jsonWorks);
+    // methode qui permet de copier les propriétés d'un objet source vers un objet cible
   }
 }
 //#endregion
@@ -71,24 +73,24 @@ function createElement(tag, className, textContent) {
 }
 
 // Page d'accueil de la galerie
-function fetchAndDisplay(categoryId) {
-  const token = sessionStorage.getItem("token");
+function fetchAndDisplay(categoryId) {  // fonction pour récupérer et afficher les œuvres
+  const token = sessionStorage.getItem("token");  // stock le token dans une variable si besoin
   console.log(token);
 
-  fetch(URL_WORKS)
-    .then((data) => data.json())
-    .then((jsonListWorks) => {
+  fetch(URL_WORKS)// récupère les données de l'API
+    .then((data) => data.json()) // convertit les données en JSON
+    .then((jsonListWorks) => {// récupère les données au format JSON et je les traites
       let filteredWorks;
-      if (categoryId === "all") {
-        filteredWorks = jsonListWorks;
+      if (categoryId === "all") { // si la catégorie est "all", on affiche toutes les œuvres
+        filteredWorks = jsonListWorks; // on récupère toutes les œuvres
       } else {
-        filteredWorks = jsonListWorks.filter(
-          (work) => work.category.id === categoryId
+        filteredWorks = jsonListWorks.filter( // sinon, on filtre les œuvres par catégorie
+          (work) => work.category.id === categoryId // on récupère les œuvres dont l'ID de la catégorie correspond à la catégorie sélectionnée
         );
       }
 
-      for (let jsonWorks of filteredWorks) {
-        let works = new Works(jsonWorks);
+      for (let jsonWorks of filteredWorks) { // pour chaque œuvre
+        let works = new Works(jsonWorks); // on crée un objet de la classe Works
 
         let figure = document.createElement("div");
         figure.className = "figure";
@@ -106,8 +108,8 @@ function fetchAndDisplay(categoryId) {
         document.getElementById("gallery").appendChild(figure);
       }
     })
-    .catch((error) => {
-      console.error("Erreur lors de la récupération des articles : " + error);
+    .catch((error) => { // en cas d'erreur
+      console.error("Erreur lors de la récupération des articles : " + error); // on affiche l'erreur dans la console
     });
 }
 
@@ -158,7 +160,7 @@ function removeOverlay() {
 function updateModal() {
 
   const token = sessionStorage.getItem("token");
-  if (!token) {
+  if (!token) { // si le token n'existe pas
     console.error(
       "Token manquant. L'utilisateur n'est peut-être pas connecté."
     );
@@ -192,8 +194,25 @@ function updateModal() {
 
   modalBtn.addEventListener("click", () => {
     modalStep += modalStep === 0 ? 1 : -1;
+
+
+
     updateModal();
+    console.log("helloooooooooooooo");
   });
+
+  // événement sur la touche Echap pour fermer la modale
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      modal.remove();
+      removeOverlay();
+      modalStep = 0;
+
+    }
+  });
+
+
+
 
   // création du bouton de fermeture de la modale
   const modalClose = createElement("button", "close-btn", null);
@@ -214,10 +233,10 @@ function updateModal() {
 
 
 
-//S0phie
+  //S0phie
 
 
-  switch (modalStep) {
+  switch (modalStep) { // switch pour afficher les différentes étapes de la modale
     case 0:
 
       modalContent.appendChild(
@@ -240,6 +259,7 @@ function updateModal() {
 
         updateModal();
       });
+
 
       // Ajout de la modale
       modalContent.appendChild(galleryModale);
@@ -268,12 +288,21 @@ function updateModal() {
 
             // Evénements pour le clic sur l'icône de la corbeille
             trashIcon.addEventListener("click", async () => {
+
+              /**form.addEventListener("submit", async (e) => { 
+                e.preventDefault(); // Annule le comportement par défaut du formulaire
+                await loginUser(email.value, password.value); // Appel de la fonction asynchrone
+              });  */
+
+
+
               try {
                 const response = await deleteWork(works.id);
                 console.log(response);
 
                 if (response === "Work deleted") {
                   figureModals.remove();
+
                   console.log("Figure supprimée avec succès");
                 }
               } catch (error) {
@@ -448,14 +477,14 @@ function updateModal() {
         console.log(category);
 
 
-        let formData = new FormData;
+        let formData = new FormData;// Création d'un objet FormData
 
         // Ajout de l'image
         formData.append("image", imageInput.files[0]);
         console.log(imageInput.files[0]);
 
         // Ajout du titre
-        formData.append("title", title);
+        formData.append("title", title);// cle et valeur
         console.log(title);
 
         // Ajout de la catégorie
@@ -484,7 +513,7 @@ function updateModal() {
             if (json.status === 200) {
               return "Work added";
             }
-            else { window.location.href = "index.html"; }
+            else { { window.location.href = "index.html"; } }
           })
           .catch((error) => {
             console.error("Erreur lors de l'ajout de l'image : " + error);
@@ -510,7 +539,7 @@ function updateModal() {
 
 //#endregion
 
-// Suppression d'une œuvre
+// Suppression d'une œuvre en restansur la modale pour en supprimer une autre
 const deleteWork = async (id) => {
   const token = sessionStorage.getItem("token");
   console.log(token);
@@ -537,7 +566,6 @@ const deleteWork = async (id) => {
     return "Work deleted";
   }
 
-  return data;
 };
 
 let figures = document.getElementsByClassName("figureModale");
@@ -551,12 +579,14 @@ for (let i = 0; i < figures.length; i++) {
 
     try {
       const response = await deleteWork(workId);
+
       console.log(response);
 
       // Supprime visuellement la figure si la suppression est réussie
       if (response === "Work deleted") {
         figures[i].remove();
-        console.log("Figure supprimée avec succès");
+
+
       }
     } catch (error) {
       console.error(
@@ -567,40 +597,64 @@ for (let i = 0; i < figures.length; i++) {
   });
 }
 
+//fonction pour les btn de la galerie passe en vert quand on clique dessus
+function activeButton() {
+  const btns = document.querySelectorAll(".btn");
+  btns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      btns.forEach((btn) => btn.classList.remove("active"));
+      e.target.classList.add("active");
+    });
+  });
+}
+
 //#region Evénements
+
+
+// Affichage de la galerie au chargement de la page
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("gallery").innerHTML = "";
   fetchAndDisplay("all");
+  activeButton();
 });
 
 boutonAll.addEventListener("click", async () => {
   document.getElementById("gallery").innerHTML = "";
   fetchAndDisplay("all");
+  activeButton();
 });
 
 boutonObjets.addEventListener("click", async () => {
   document.getElementById("gallery").innerHTML = "";
   fetchAndDisplay(1);
+  activeButton();
 });
 
 boutonAppart.addEventListener("click", async () => {
   document.getElementById("gallery").innerHTML = "";
   fetchAndDisplay(2);
+  activeButton();
 });
 
 boutonHotelResto.addEventListener("click", async () => {
   document.getElementById("gallery").innerHTML = "";
   fetchAndDisplay(3);
+  activeButton();
 });
+
+
 
 // Ouverture de la modale événement sur le bouton
 btnOpenModal.addEventListener("click", () => {
   updateModal();
   applyOverlay();
+
 });
 
-// évenement sur le DOMContentLoaded
+
+//vérifie si l'utilisateur est connecté en vérifiant la présence d'un token dans la session.
 document.addEventListener("DOMContentLoaded", function () {
+
   const token = sessionStorage.getItem("token");// stock le token dans une variable
 
   if (token) {
@@ -615,4 +669,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //#endregion
 
-//S0phie 
+//S0phie
+
+
+
+
+// 571 fonction pour les btn galerie passe en vert quand on clique dessus
