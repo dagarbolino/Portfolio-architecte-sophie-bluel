@@ -177,28 +177,21 @@ h1>span {
 }
 
 .myBtn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row-reverse;
 	border: none;
 	margin-top: 5px;
+	background: white;
 	cursor: pointer;
 	width: 100px;
 	height: 25px;
 }
 
 .fa-pen-to-square {
-	font-size: 16px;
+	font-size: 13px;
 	margin-right: 2vh;
-}
-
-
-.myBtn {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: row-reverse;
-	margin-top: 5px;
-	font-size: 15px;
-	background: #fff;
-
 }
 
 h2 {
@@ -315,7 +308,6 @@ a:hover {
 
 #introduction img {
 	display: block;
-	/*margin: auto;*/
 	width: 100%;
 }
 
@@ -362,6 +354,7 @@ a:hover {
 	line-height: 19px;
 	letter-spacing: 0em;
 	text-align: center;
+	margin-left: 5px;
 }
 
 .active,
@@ -379,7 +372,7 @@ a:hover {
 	margin: auto;
 }
 
-#contact>* {
+#contact {
 	text-align: center;
 }
 
@@ -437,11 +430,8 @@ footer nav ul {
 	font-size: 16px;
 }
 
-/* The Modal (background) */
-.modals {
+.modal {
 	display: none;
-	justify-content: center;
-	align-items: center;
 	position: fixed;
 	z-index: 1;
 	padding-top: 60px;
@@ -454,48 +444,15 @@ footer nav ul {
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
-
-
-
-
 #galleryModale {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-column-gap: 1px;
 	grid-row-gap: 15px;
 	margin-bottom: 40px;
-	min-height: 50px;
 	max-width: 500px;
 	justify-items: center;
-	align-items: center;
-	border: 1px solid #0f0404;
-
-}
-
-.worksItemModal {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	position: relative;
-	border: 1px solid #0f0404;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-.worksItemModal .spanTrashh {
-	position: absolute;
-	color: white;
-	background: black;
-	font-size: 8px;
-	cursor: pointer;
-	padding: 2px;
-	margin-top: 9px;
-	margin-left: 50px;
-}
-
-.worksItemModal  .img {
-	width: 75px;
-	object-fit: cover;
+	align-items: center
 }
 
 #galleryModale .figureModal {
@@ -509,19 +466,19 @@ footer nav ul {
 	opacity: 0.4;
 }
 
-#galleryModale .spanTrash {
+#galleryModale span {
 	position: absolute;
 	color: white;
 	background: black;
 	font-size: 8px;
+	margin-left: 62px;
 	margin-top: 9px;
 	padding: 2px;
 	cursor: pointer;
-
 }
 
 .fa-trash-can {
-	font-size: 15px;
+	font-size: 10px;
 	cursor: pointer;
 }
 
@@ -529,23 +486,27 @@ footer nav ul {
 	width: 75px;
 	margin: 4px;
 }
-
-
-
 /* Modal Content */
 .modal-content {
 	margin: auto;
 	padding: 30px 60px;
 	top: 0;
-	width: auto;
-	min-width: 450px;
+	width: 100%;
 	height: auto;
 	min-height: 350px;
-	border: 1px solid #0f0404;
-	background-color: #fefefe;
 }
-
 /* Parti modale ajout photo*/
+.addImgModale {
+	background: #E8F1F6;
+	width: auto;
+	max-width: 420px;
+	height: 169px;
+	max-height: 650px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
 
 .classTitleCat {
 	margin-top: 20px;
@@ -644,18 +605,12 @@ hr .elementHr {
 	font-weight: 900;
 }
 
-.modal-content span {
-	color: white;
-	color: #0f0404;
-	padding: 2px;
-	cursor: pointer;
-}
-.divSpanModal {
-	display: flex;
-	justify-content: flex-end;
-}
 .close-btn {
-	font-size: 2rem;
+	font-size: 1.6rem;
+	position: absolute;
+	top: 0px;
+	right: 15px;
+	margin: 0;
 }
 
 .back-btn {
@@ -665,13 +620,11 @@ hr .elementHr {
 	margin: 0;
 }
 
-/* Hide the file input button text */
 input[type="file"] {
 	font-size: 1em;
 	position: relative;
 }
 
-/* Style the file input button */
 input[type="file"]::before {
 	content: "+ Ajouter une photo";
 	display: flex;
@@ -742,7 +695,6 @@ input[type="file"]:hover::before {
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 0px;
-
 }
 
 .newImgInModal {
