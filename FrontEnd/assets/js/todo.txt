@@ -1,8 +1,15 @@
-Fixer le CSS de base qui a été modifier
-Fixer la modal quand on fais retour
-Ajouter un <hr/> pour la ligne
-Revoir tout le CSS par rapport a la maquette
-Préparer la soutenance
+revoir le btn filtre green
+
+
+Il faut utiliser le package serve qui permet de lancer
+ un serveur sans rechargement de page. 
+
+https://www.npmjs.com/package/serve
+
+Pour le reste il faut ensuite en JS refaire un fetch
+ après la suppression ou l'ajout d'un projet 
+ et réafficher la liste des projets sur la page 
+ et dans la modale.
 
 
 
