@@ -30,8 +30,9 @@ async function loginUser(email, password) {
       sessionStorage.setItem("token", responseData.token); // Stockage du token dans le sessionStorage
       window.location.href = "index.html"; 
     } else {
-      const err = await response.json(); 
-      console.error(err); 
+      console.error("Retour du serveur : ", response.status);
+      const error = await response.json();
+      alert(" L'identifiant ou le mot de passe sont incorrect");
     }
   } catch (error) { 
     console.error("Erreur lors de la connexion : " + error.message); // Affichage de l'erreur des serveurs dans la console
